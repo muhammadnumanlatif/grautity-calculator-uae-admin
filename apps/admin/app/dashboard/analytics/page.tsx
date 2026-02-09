@@ -189,7 +189,7 @@ export default function AnalyticsPage() {
                                 <BarChart data={locationData} layout="vertical">
                                     <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f0f0f0" />
                                     <XAxis type="number" hide />
-                                    <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 13, fw: 'bold' }} />
+                                    <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 13, fontWeight: 'bold' }} />
                                     <Tooltip />
                                     <Bar dataKey="count" fill="#0066cc" radius={[0, 4, 4, 0]} barSize={20} />
                                 </BarChart>
