@@ -90,6 +90,16 @@ export async function isAdmin(): Promise<boolean> {
     return true;
   }
 
+  // Fallback for authorized emails if custom claims are not yet set
+  const ADMIN_EMAILS = [
+    'muhammadnumanlatif@gmail.com',
+    'info@gratuitycalculator.ae'
+  ];
+
+  if (user.email && ADMIN_EMAILS.includes(user.email)) {
+    return true;
+  }
+
   const idTokenResult = await user.getIdTokenResult();
   return !!idTokenResult.claims.admin;
 }
