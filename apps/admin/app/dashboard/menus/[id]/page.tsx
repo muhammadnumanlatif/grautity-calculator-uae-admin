@@ -6,6 +6,8 @@ import { getDocument, updateDocument, COLLECTIONS } from '@gratuity/firebase-con
 import { MenuConfig, MenuItem } from '@gratuity/shared/types';
 import MenuEditor from '@/components/menus/MenuEditor';
 import MenuPreview from '@/components/menus/MenuPreview';
+import { DEFAULT_MENUS } from '@/lib/menu-defaults';
+import toast from 'react-hot-toast';
 
 export default function EditMenuPage() {
     const router = useRouter();
@@ -63,6 +65,23 @@ export default function EditMenuPage() {
             alert('Failed to update menu');
         } finally {
             setSaving(false);
+        }
+    };
+
+    const handleRestoreDefaults = () => {
+        const defaultData = DEFAULT_MENUS[formData.location];
+        if (!defaultData) {
+            toast.error('No default configuration found for this location');
+            return;
+        }
+
+        if (window.confirm('Are you sure you want to restore this menu to its default state? All unsaved changes will be lost.')) {
+            setFormData({
+                ...formData,
+                name: defaultData.name || formData.name,
+            });
+            setItems(defaultData.items || []);
+            toast.success('Restored to default structure. Don\'t forget to save!');
         }
     };
 
@@ -159,6 +178,14 @@ export default function EditMenuPage() {
                                     onClick={() => router.back()}
                                 >
                                     Cancel
+                                </button>
+                                <hr className="my-2" />
+                                <button
+                                    type="button"
+                                    className="btn btn-light btn-sm text-danger border"
+                                    onClick={handleRestoreDefaults}
+                                >
+                                    Restore to Default
                                 </button>
                             </div>
                         </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getDocuments, COLLECTIONS, subscribeToDocuments } from '@gratuity/firebase-config/firestore';
+import { getDocuments, COLLECTIONS, subscribeToDocuments, limit } from '@gratuity/firebase-config/firestore';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   AreaChart, Area
@@ -13,7 +13,9 @@ export default function AdminDashboard() {
     pages: 0,
     blogs: 0,
     locations: 0,
-    calculations: 24500
+    calculations: 24500,
+    activeMenus: 0,
+    draftMenus: 0
   });
 
   const chartData = [
@@ -53,8 +55,13 @@ export default function AdminDashboard() {
     const unsubCalcs = subscribeToDocuments(COLLECTIONS.CALCULATIONS, [], (docs) => {
       if (docs.length > 0) {
         setStats(prev => ({ ...prev, calculations: docs.length }));
-        // In a real app, you would process docs to generate chartData here
       }
+    });
+
+    const unsubMenus = subscribeToDocuments(COLLECTIONS.MENUS, [], (docs) => {
+      const active = docs.filter(d => d.isActive).length;
+      const draft = docs.length - active;
+      setStats(prev => ({ ...prev, activeMenus: active, draftMenus: draft }));
     });
 
     // Cleanup subscriptions
@@ -64,6 +71,7 @@ export default function AdminDashboard() {
       unsubLocations();
       unsubCalcs();
       unsubStatus();
+      unsubMenus();
     };
   }, []);
 
@@ -194,6 +202,28 @@ export default function AdminDashboard() {
                 <div className="progress-bar bg-white" style={{ width: '99%' }}></div>
               </div>
             </div>
+          </div>
+
+          {/* Menu Health Widget */}
+          <div className="card shadow-sm rounded-4 p-4 border-0 mt-4 bg-light">
+            <h6 className="fw-bold mb-3 text-secondary ls-1 uppercase x-small">Navigation Health</h6>
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <span className="small text-muted">Active Menus</span>
+              <span className="badge bg-success rounded-pill">{stats.activeMenus}</span>
+            </div>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <span className="small text-muted">Draft/Inactive</span>
+              <span className="badge bg-secondary rounded-pill">{stats.draftMenus}</span>
+            </div>
+            <div className="progress rounded-pill mb-3" style={{ height: '8px' }}>
+              <div
+                className="progress-bar bg-success"
+                style={{ width: `${(stats.activeMenus / (stats.activeMenus + stats.draftMenus || 1)) * 100}%` }}
+              ></div>
+            </div>
+            <Link href="/dashboard/menus" className="btn btn-sm btn-white border w-100 shadow-xs">
+              Manage Links
+            </Link>
           </div>
         </div>
       </div>
