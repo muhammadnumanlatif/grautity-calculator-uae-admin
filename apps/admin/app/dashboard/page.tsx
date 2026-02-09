@@ -55,7 +55,7 @@ export default function AdminDashboard() {
     <div className="container-fluid py-4">
       <div className="mb-4">
         <h1 className="h3 fw-bold">Welcome back, Admin</h1>
-        <p className="text-muted">Here's what's happening with Gratuity Calculator UAE today.</p>
+        <p className="text-muted">Here&apos;s what&apos;s happening with Gratuity Calculator UAE today.</p>
       </div>
 
       <div className="row g-3 mb-4">

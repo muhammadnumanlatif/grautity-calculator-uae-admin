@@ -256,7 +256,7 @@ export default function MenuEditor({ items, onChange }: MenuEditorProps) {
 
             {localItems.length === 0 && (
                 <div className="text-center py-4 text-muted bg-light rounded">
-                    No items yet. Click "Add Item" to start building your menu.
+                    No items yet. Click &quot;Add Item&quot; to start building your menu.
                 </div>
             )}
         </div>

@@ -38,7 +38,7 @@ export default function PagesManager() {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h1 className="h3 fw-bold mb-1">Pages</h1>
-          <p className="text-muted small mb-0">Manage your website's static landing pages</p>
+          <p className="text-muted small mb-0">Manage your website&apos;s static landing pages</p>
         </div>
         <Link href="/dashboard/pages/new" className="btn btn-primary d-flex align-items-center gap-2">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

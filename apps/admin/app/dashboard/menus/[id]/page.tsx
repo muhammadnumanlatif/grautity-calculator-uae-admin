@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { getDocument, updateDocument, COLLECTIONS } from '@gratuity/firebase-config/firestore';
 import { MenuConfig, MenuItem } from '@gratuity/shared/types';
@@ -21,11 +21,7 @@ export default function EditMenuPage() {
     });
     const [items, setItems] = useState<MenuItem[]>([]);
 
-    useEffect(() => {
-        loadMenu();
-    }, [menuId]);
-
-    const loadMenu = async () => {
+    const loadMenu = useCallback(async () => {
         try {
             const menu = await getDocument<MenuConfig>(COLLECTIONS.MENUS, menuId);
             if (menu) {
@@ -41,7 +37,13 @@ export default function EditMenuPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [menuId]);
+
+    useEffect(() => {
+        loadMenu();
+    }, [loadMenu]);
+
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

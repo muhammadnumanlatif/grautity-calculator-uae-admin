@@ -132,6 +132,7 @@ export default function MediaLibraryPage() {
                                         <div className="asset-card card border-0 h-100 overflow-hidden shadow-sm">
                                             <div className="asset-preview position-relative" style={{ aspectRatio: '1/1', background: '#f8f9fa' }}>
                                                 {asset.pathname.match(/\.(jpg|jpeg|png|webp|svg|gif)$/i) ? (
+                                                    /* eslint-disable-next-line @next/next/no-img-element */
                                                     <img src={asset.url} alt={asset.pathname} className="w-100 h-100 object-fit-cover rounded-3" />
                                                 ) : (
                                                     <div className="w-100 h-100 d-flex align-items-center justify-content-center bg-light text-muted">
@@ -173,7 +174,8 @@ export default function MediaLibraryPage() {
                                                 <td>
                                                     <div className="d-flex align-items-center gap-3">
                                                         {asset.pathname.match(/\.(jpg|jpeg|png|webp|svg|gif)$/i) ? (
-                                                            <img src={asset.url} width="40" height="40" className="rounded object-fit-cover shadow-sm" />
+                                                            /* eslint-disable-next-line @next/next/no-img-element */
+                                                            <img src={asset.url} alt={asset.pathname} width="40" height="40" className="rounded object-fit-cover shadow-sm" />
                                                         ) : (
                                                             <div className="bg-light rounded d-flex align-items-center justify-content-center" style={{ width: 40, height: 40 }}>
                                                                 <span className="x-small fw-bold">{asset.pathname.split('.').pop()?.toUpperCase()}</span>
