@@ -194,6 +194,7 @@ export default function Footer() {
                   <li><Link href="/contact">Contact Us</Link></li>
                   <li><Link href="/privacy-policy">Privacy Policy</Link></li>
                   <li><Link href="/terms-of-use">Terms of Use</Link></li>
+                  <li><a href="https://grautity-calculator-uae-admin.vercel.app" target="_blank" rel="noopener noreferrer">Admin Login</a></li>
                 </ul>
 
                 {/* MOHRE App Download */}
