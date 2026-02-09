@@ -6,6 +6,38 @@ import { getDocuments, COLLECTIONS } from '@gratuity/firebase-config/firestore';
 import { Page } from '@gratuity/shared/types';
 import styles from './pages.module.css';
 
+// Helper to safely format date
+const formatPageDate = (date: any): string => {
+  if (!date) return 'N/A';
+
+  try {
+    // Handle Firestore Timestamp object (has toDate method)
+    if (typeof date.toDate === 'function') {
+      return date.toDate().toLocaleDateString();
+    }
+
+    // Handle serialized Timestamp (e.g. { seconds: 123, nanoseconds: 456 })
+    if (typeof date.seconds === 'number') {
+      return new Date(date.seconds * 1000).toLocaleDateString();
+    }
+
+    // Handle string or Date object
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return 'Invalid Date';
+    return d.toLocaleDateString();
+  } catch (e) {
+    return 'Invalid Date';
+  }
+};
+
+// Helper to format slug into title case
+const formatSlug = (slug: string): string => {
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
 export default function PagesManager() {
   const [pages, setPages] = useState<Page[]>([]);
   const [loading, setLoading] = useState(true);
@@ -117,7 +149,7 @@ export default function PagesManager() {
                 filteredPages.map((page) => (
                   <tr key={page.id} className={styles.tableRow}>
                     <td className="px-4">
-                      <div className="fw-bold text-dark">{page.title || 'Untitled Page'}</div>
+                      <div className="fw-bold text-dark">{page.title || (page.slug ? formatSlug(page.slug) : 'Untitled Page')}</div>
                       <div className="text-muted x-small">ID: {page.id.substring(0, 8)}...</div>
                     </td>
                     <td><code className="bg-light px-2 py-1 rounded text-primary" style={{ fontSize: '0.8rem' }}>/{page.slug || ''}</code></td>
@@ -146,7 +178,7 @@ export default function PagesManager() {
                       </div>
                     </td>
                     <td className="text-muted small">
-                      {page.updatedAt ? new Date(page.updatedAt).toLocaleDateString() : 'N/A'}
+                      {formatPageDate(page.updatedAt || page.createdAt)}
                     </td>
                     <td className="px-4 text-end">
                       <div className="btn-group btn-group-sm rounded shadow-sm">
