@@ -1,5 +1,6 @@
+import type { PageBlock } from './blocks';
 export * from './blocks';
-export * from './blocks';
+
 // Contract Types
 export type ContractType = 'unlimited' | 'limited';
 
@@ -100,18 +101,23 @@ export interface Location {
   blocks?: PageBlock[];
 }
 
+// Export Menu Types
+export * from './menus';
+
 // SEO Data
 export interface SEOData {
   metaTitle: string;
   metaDescription: string;
   focusKeyword: string;
   secondaryKeywords: string[];
+  longTailKeywords?: string[]; // New for specific phrasing
   canonicalUrl?: string;
   robots: {
     index: boolean;
     follow: boolean;
   };
   seoScore?: number;
+  structuredData?: Record<string, any>; // Flexible JSON-LD override
 }
 
 // Schema Markup
@@ -372,12 +378,15 @@ export interface SiteSettings {
   id?: string;
   general: {
     siteName: string;
+    tagline?: string;
     siteDescription: string;
     contactEmail: string;
     contactPhone?: string;
     address?: string;
     logoUrl?: string;
+    logoDarkUrl?: string;
     faviconUrl?: string;
+    appleTouchIcon?: string;
   };
   socialLinks: {
     facebook?: string;

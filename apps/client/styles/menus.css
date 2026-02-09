@@ -1,0 +1,107 @@
+/* Dynamic Menu Styles */
+
+/* Mega Menu Dropdown */
+.mega-menu-dropdown .dropdown-menu {
+    min-width: 600px;
+    max-width: 900px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin-top: 0.5rem;
+}
+
+.mega-menu {
+    padding: 2rem;
+}
+
+.mega-menu h6 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+}
+
+.mega-menu a {
+    transition: all 0.2s ease;
+}
+
+.mega-menu a:hover {
+    color: var(--bs-primary) !important;
+    transform: translateX(4px);
+}
+
+/* Dropdown Styles */
+.dropdown-toggle::after {
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: var(--bs-primary);
+}
+
+/* Hover effect for calculators list */
+.hover-bg-light:hover {
+    background-color: #f8f9fa;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .mega-menu-dropdown .dropdown-menu {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .mega-menu {
+        padding: 1rem;
+    }
+
+    .mega-menu .row {
+        flex-direction: column;
+    }
+
+    .mega-menu .col-md-3,
+    .mega-menu .col-md-4,
+    .mega-menu .col-md-6 {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Badge Styles in Menus */
+.nav-link .badge,
+.dropdown-item .badge {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+    font-weight: 600;
+}
+
+/* Menu Animation */
+.dropdown-menu {
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

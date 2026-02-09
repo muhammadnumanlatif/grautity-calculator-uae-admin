@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { UAE_EMIRATES, SITE_CONFIG } from '@gratuity/shared';
+import { SiteSettings } from '@gratuity/shared/types';
 import styles from './Footer.module.css';
 
 // Popular free zones for footer
@@ -15,10 +16,22 @@ const POPULAR_FREE_ZONES = [
   { name: 'Hamriyah', slug: '/sharjah/free-zones/hamriyah' },
 ];
 
-export default function Footer() {
+interface FooterProps {
+  settings: SiteSettings | null | undefined;
+}
+
+export default function Footer({ settings }: FooterProps) {
   const [email, setEmail] = useState('');
   const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [mobileAccordion, setMobileAccordion] = useState<string | null>(null);
+
+  const currentYear = new Date().getFullYear();
+  const siteName = settings?.general?.siteName || SITE_CONFIG.name;
+  const description = settings?.general?.siteDescription || 'Calculate your UAE gratuity instantly with our free MOHRE-compliant calculator.';
+  const contactEmail = settings?.general?.contactEmail || 'info@gratuitycalculator.ae';
+  const phone = settings?.general?.contactPhone;
+  const social = settings?.socialLinks;
+  const copyright = settings?.footer?.copyrightText || `© ${currentYear} ${siteName}. All rights reserved.`;
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,46 +117,54 @@ export default function Footer() {
               <div className="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <div className={styles.footerBrand}>
                   <Link href="/" className={styles.brandLink}>
-                    <span className={styles.brandText}>Gratuity Calculator</span>
+                    <span className={styles.brandText}>{siteName}</span>
                     <span className={styles.brandBadge}>UAE</span>
                   </Link>
                   <p className={styles.footerDescription}>
-                    Calculate your UAE gratuity instantly with our free MOHRE-compliant calculator.
+                    {description}
                   </p>
 
                   {/* Contact Info */}
                   <div className={styles.footerContact}>
-                    <a href="https://wa.me/971501234567" className={`${styles.contactItem} ${styles.contactItemWhatsapp}`} target="_blank" rel="noopener noreferrer">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                      </svg>
-                      <span>WhatsApp Support</span>
-                    </a>
-                    <a href="mailto:info@gratuitycalculator.ae" className={styles.contactItem}>
+                    {phone && (
+                      <a href={`https://wa.me/${phone.replace(/[^0-9]/g, '')}`} className={`${styles.contactItem} ${styles.contactItemWhatsapp}`} target="_blank" rel="noopener noreferrer">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                        </svg>
+                        <span>WhatsApp Support</span>
+                      </a>
+                    )}
+                    <a href={`mailto:${contactEmail}`} className={styles.contactItem}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                       </svg>
-                      <span>info@gratuitycalculator.ae</span>
+                      <span>{contactEmail}</span>
                     </a>
                   </div>
 
                   {/* Social Links */}
                   <div className={styles.socialLinks}>
-                    <a href="#" aria-label="Facebook" className={styles.socialLink}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                      </svg>
-                    </a>
-                    <a href="#" aria-label="Twitter" className={styles.socialLink}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
-                      </svg>
-                    </a>
-                    <a href="#" aria-label="LinkedIn" className={styles.socialLink}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-                      </svg>
-                    </a>
+                    {social?.facebook && (
+                      <a href={social.facebook} aria-label="Facebook" className={styles.socialLink} target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                      </a>
+                    )}
+                    {social?.twitter && (
+                      <a href={social.twitter} aria-label="Twitter" className={styles.socialLink} target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                        </svg>
+                      </a>
+                    )}
+                    {social?.linkedin && (
+                      <a href={social.linkedin} aria-label="LinkedIn" className={styles.socialLink} target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                        </svg>
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -223,10 +244,10 @@ export default function Footer() {
           <div className={styles.footerMobile}>
             <div className={styles.footerBrandMobile}>
               <Link href="/" className={styles.brandLink}>
-                <span className={styles.brandText}>Gratuity Calculator</span>
+                <span className={styles.brandText}>{siteName}</span>
                 <span className={styles.brandBadge}>UAE</span>
               </Link>
-              <p>Free MOHRE-compliant gratuity calculator for UAE</p>
+              <p>{description}</p>
             </div>
 
             <div className={styles.mobileAccordions}>
@@ -297,9 +318,15 @@ export default function Footer() {
             </div>
 
             <div className={styles.mobileSocial}>
-              <a href="#" aria-label="Facebook"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg></a>
-              <a href="#" aria-label="Twitter"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" /></svg></a>
-              <a href="#" aria-label="LinkedIn"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" /></svg></a>
+              {social?.facebook && (
+                <a href={social.facebook} aria-label="Facebook" target="_blank" rel="noopener noreferrer"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg></a>
+              )}
+              {social?.twitter && (
+                <a href={social.twitter} aria-label="Twitter" target="_blank" rel="noopener noreferrer"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" /></svg></a>
+              )}
+              {social?.linkedin && (
+                <a href={social.linkedin} aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" /></svg></a>
+              )}
             </div>
           </div>
         </div>
@@ -355,7 +382,7 @@ export default function Footer() {
         <div className="container">
           <div className={styles.footerBottomContent}>
             <div className={styles.footerBottomLeft}>
-              <p>&copy; 2026 {SITE_CONFIG.name}. All rights reserved.</p>
+              <p>{copyright}</p>
               <p className={styles.legalNote}>Based on UAE Labor Law (Federal Decree-Law No. 33 of 2021)</p>
             </div>
             <div className={styles.footerBottomRight}>

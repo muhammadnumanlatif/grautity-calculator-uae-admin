@@ -12,6 +12,7 @@ import {
   SHARJAH_AREAS,
   SHARJAH_FREE_ZONES,
 } from '@gratuity/shared';
+import { SiteSettings } from '@gratuity/shared/types';
 import styles from './Header.module.css';
 
 // Featured areas/free zones for mega menu
@@ -30,7 +31,11 @@ const FEATURED_DATA = {
   },
 };
 
-export default function Header() {
+interface HeaderProps {
+  settings: SiteSettings | null | undefined;
+}
+
+export default function Header({ settings }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -42,6 +47,9 @@ export default function Header() {
   const router = useRouter();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const logoUrl = settings?.general?.logoUrl;
+  const siteName = settings?.general?.siteName || 'Gratuity Calculator UAE';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -133,8 +141,14 @@ export default function Header() {
         <nav className={styles.navbar}>
           <div className={`container ${styles.navbarContainer}`}>
             <Link href="/" className={styles.navbarBrand}>
-              <span className={styles.brandText}>Gratuity Calculator</span>
-              <span className={styles.brandBadge}>UAE</span>
+              {logoUrl ? (
+                <img src={logoUrl} alt={siteName} className={styles.brandLogo} style={{ height: '40px', objectFit: 'contain' }} />
+              ) : (
+                <>
+                  <span className={styles.brandText}>{siteName.replace(' UAE', '')}</span>
+                  <span className={styles.brandBadge}>UAE</span>
+                </>
+              )}
             </Link>
 
             {/* Desktop Navigation */}

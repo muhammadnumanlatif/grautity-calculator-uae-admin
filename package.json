@@ -13,16 +13,25 @@
     "build:client": "turbo run build --filter=client",
     "build:admin": "turbo run build --filter=admin",
     "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "validate": "npm run lint && npm run typecheck",
+    "validate:client": "cd apps/client && npm run lint && npx tsc --noEmit",
+    "validate:admin": "cd apps/admin && npm run lint && npx tsc --noEmit",
+    "pre-deploy": "npm run validate && npm run build",
+    "test:build": "npm run build:client && npm run build:admin",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
   },
   "devDependencies": {
-    "turbo": "^2.3.0",
     "prettier": "^3.2.5",
+    "turbo": "^2.3.0",
     "typescript": "^5.3.3"
   },
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "npm@10.2.0"
+  "packageManager": "npm@10.2.0",
+  "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1"
+  }
 }

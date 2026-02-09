@@ -6,15 +6,19 @@ import { generateBreadcrumbSchema, combineSchemas } from '@gratuity/seo-utils';
 import NewsletterForm from '@/components/forms/NewsletterForm';
 import styles from './page.module.css';
 
-export const revalidate = 3600; // revalidate every hour
+// Revalidate every hour
+export const revalidate = 3600;
 
-import { getBlogBySlug, getDocuments, COLLECTIONS } from '@gratuity/firebase-config/firestore';
+// Use dynamic rendering to avoid build-time Firebase issues
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
+import { getBlogBySlug, getPublishedBlogs, where, orderBy, limit } from '@gratuity/firebase-config/firestore';
 import type { BlogPost } from '@gratuity/shared/types';
 
-async function getRelatedPosts(currentSlug: string) {
-  const blogs = await getDocuments<BlogPost>(COLLECTIONS.BLOGS, [
-    // You could add category filtering here if desired
-  ]);
+async function getRelatedPosts(currentSlug: string, category?: string) {
+  // Optimized query with limit - only fetch what we need
+  const blogs = await getPublishedBlogs<BlogPost>(10); // Limit to 10 instead of all
   return blogs.filter(p => p.slug !== currentSlug).slice(0, 3);
 }
 
@@ -58,13 +62,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ] : undefined,
     },
   };
-}
-
-export async function generateStaticParams() {
-  const posts = await getDocuments<BlogPost>(COLLECTIONS.BLOGS);
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
 }
 
 export default async function BlogPostPage({ params }: PageProps) {

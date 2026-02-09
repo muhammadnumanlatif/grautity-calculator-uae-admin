@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "clean": "rm -rf .next node_modules"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "@gratuity/firebase-config": "*",
     "@gratuity/seo-utils": "*",
     "@gratuity/shared": "*",
+    "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^3.3.4",
     "bootstrap": "^5.3.3",
     "date-fns": "^3.3.1",

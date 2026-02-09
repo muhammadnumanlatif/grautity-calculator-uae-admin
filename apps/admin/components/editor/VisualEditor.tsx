@@ -10,6 +10,7 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 import DraggableBlock from './DraggableBlock';
 import DroppableBlock from './DroppableBlock';
 import BlockSettingsModal from './BlockSettingsModal';
+import { INITIAL_BLOCKS } from '@/constants/blocks';
 
 interface VisualEditorProps {
     initialBlocks: PageBlock[];
@@ -46,12 +47,12 @@ export default function VisualEditor({ initialBlocks = [], onBlocksChange }: Vis
     };
 
     const handleAddBlock = (type: PageBlock['type']) => {
-        // In a real implementation, each block would have a default schema
-        // For now, we add a simplified stub
+        const initialData = INITIAL_BLOCKS[type] ? JSON.parse(JSON.stringify(INITIAL_BLOCKS[type].data)) : {};
+
         const newBlock: PageBlock = {
             id: `block-${Date.now()}`,
             type: type,
-            data: {}
+            data: initialData
         } as any;
 
         const newItems = [...blocks, newBlock];
@@ -77,12 +78,24 @@ export default function VisualEditor({ initialBlocks = [], onBlocksChange }: Vis
             <div className="bg-white border-end" style={{ width: '280px', overflowY: 'auto' }}>
                 <div className="p-3">
                     <h6 className="text-secondary text-uppercase small fw-bold mb-3">Add Components</h6>
-                    <div className="list-group list-group-flush">
-                        <button className="list-group-item list-group-item-action" onClick={() => handleAddBlock('hero')}>Hero Section</button>
-                        <button className="list-group-item list-group-item-action" onClick={() => handleAddBlock('calculator')}>Calculator</button>
-                        <button className="list-group-item list-group-item-action" onClick={() => handleAddBlock('rich-text')}>Rich Text</button>
-                        <button className="list-group-item list-group-item-action" onClick={() => handleAddBlock('faq')}>FAQ Section</button>
-                        <button className="list-group-item list-group-item-action" onClick={() => handleAddBlock('cta')}>Call to Action</button>
+                    <div className="d-grid gap-2">
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('hero')}>Hero Section</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('calculator')}>Gratuity Calculator</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('rich-text')}>Rich Text</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('heading')}>Heading</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('paragraph')}>Paragraph</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('image')}>Image</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('video')}>Video</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('link')}>Link/Button</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('cards')}>Cards Grid</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('table')}>Table</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('faq')}>FAQ Section</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('cta')}>Call to Action</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('separator')}>Separator</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('table-of-contents')}>Table of Contents</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('html')}>Custom HTML</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('shortcode')}>Shortcode</button>
+                        <button className="btn btn-outline-secondary btn-sm text-start" onClick={() => handleAddBlock('interlink')}>Internal Linking</button>
                     </div>
                 </div>
             </div>

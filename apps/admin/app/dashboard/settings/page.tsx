@@ -135,6 +135,16 @@ export default function SettingsPage() {
                                         />
                                     </div>
                                     <div className="col-md-6">
+                                        <label className="form-label small fw-bold text-muted uppercase">Tagline</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={settings?.general.tagline || ''}
+                                            onChange={(e) => handleChange('general', 'tagline', e.target.value)}
+                                            placeholder="e.g., Simple, Fast, Accurate"
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
                                         <label className="form-label small fw-bold text-muted uppercase">Contact Email</label>
                                         <input
                                             type="email"
@@ -148,7 +158,7 @@ export default function SettingsPage() {
                                         <label className="form-label small fw-bold text-muted uppercase">Site Description</label>
                                         <textarea
                                             className="form-control"
-                                            rows={3}
+                                            rows={2}
                                             value={settings?.general.siteDescription || ''}
                                             onChange={(e) => handleChange('general', 'siteDescription', e.target.value)}
                                         ></textarea>
@@ -170,6 +180,63 @@ export default function SettingsPage() {
                                             value={settings?.general.address || ''}
                                             onChange={(e) => handleChange('general', 'address', e.target.value)}
                                         />
+                                    </div>
+                                    <div className="col-12 border-top pt-3 mt-3">
+                                        <h6 className="fw-bold mb-3">Branding & Assets</h6>
+                                        <div className="row g-3">
+                                            <div className="col-md-6">
+                                                <label className="form-label small fw-bold text-muted uppercase">Logo URL</label>
+                                                <div className="input-group">
+                                                    <span className="input-group-text">🖼️</span>
+                                                    <input
+                                                        type="url"
+                                                        className="form-control"
+                                                        value={settings?.general.logoUrl || ''}
+                                                        onChange={(e) => handleChange('general', 'logoUrl', e.target.value)}
+                                                        placeholder="https://..."
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <label className="form-label small fw-bold text-muted uppercase">Dark Mode Logo URL</label>
+                                                <div className="input-group">
+                                                    <span className="input-group-text">🌙</span>
+                                                    <input
+                                                        type="url"
+                                                        className="form-control"
+                                                        value={settings?.general.logoDarkUrl || ''}
+                                                        onChange={(e) => handleChange('general', 'logoDarkUrl', e.target.value)}
+                                                        placeholder="https://..."
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <label className="form-label small fw-bold text-muted uppercase">Favicon URL (32x32)</label>
+                                                <div className="input-group">
+                                                    <span className="input-group-text">🌐</span>
+                                                    <input
+                                                        type="url"
+                                                        className="form-control"
+                                                        value={settings?.general.faviconUrl || ''}
+                                                        onChange={(e) => handleChange('general', 'faviconUrl', e.target.value)}
+                                                        placeholder="https://..."
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <label className="form-label small fw-bold text-muted uppercase">Apple Touch Icon (180x180)</label>
+                                                <div className="input-group">
+                                                    <span className="input-group-text">📱</span>
+                                                    <input
+                                                        type="url"
+                                                        className="form-control"
+                                                        value={settings?.general.appleTouchIcon || ''}
+                                                        onChange={(e) => handleChange('general', 'appleTouchIcon', e.target.value)}
+                                                        placeholder="https://..."
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

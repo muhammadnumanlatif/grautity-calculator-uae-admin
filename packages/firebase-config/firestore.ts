@@ -42,6 +42,8 @@ export const COLLECTIONS = {
   REDIRECTS: 'redirects',
   SEO_SETTINGS: 'seoSettings',
   SITE_SETTINGS: 'siteSettings',
+  MENUS: 'menus',
+  WIDGETS: 'widgets',
 } as const;
 
 // Generic CRUD operations
@@ -122,6 +124,9 @@ export async function addDocument<T extends DocumentData>(
   return docRef.id;
 }
 
+// Alias for backward compatibility
+export const createDocument = addDocument;
+
 export async function updateDocument<T extends DocumentData>(
   collectionName: string,
   documentId: string,
@@ -159,53 +164,6 @@ export async function deleteDocument(
 }
 
 // Specific query helpers
-export async function getPublishedPages<T extends DocumentData>(): Promise<T[]> {
-  return getDocuments<T>(COLLECTIONS.PAGES, [
-    where('status', '==', 'published'),
-    orderBy('createdAt', 'desc'),
-  ]);
-}
-
-export async function getPublishedBlogs<T extends DocumentData>(
-  pageSize: number = 10,
-  lastDoc?: any
-): Promise<T[]> {
-  // Use Admin SDK on server
-  if (typeof window === 'undefined') {
-    try {
-      const { adminDb } = await import('./admin');
-      let queryRef: any = adminDb
-        .collection(COLLECTIONS.BLOGS)
-        .where('status', '==', 'published')
-        .orderBy('publishedAt', 'desc')
-        .limit(pageSize);
-
-      if (lastDoc) {
-        queryRef = queryRef.startAfter(lastDoc);
-      }
-
-      const snapshot = await queryRef.get();
-      return snapshot.docs.map((doc: any) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as unknown as T[];
-    } catch (e) {
-      console.warn('Admin SDK fetch failed for getPublishedBlogs:', e);
-    }
-  }
-
-  const constraints: QueryConstraint[] = [
-    where('status', '==', 'published'),
-    orderBy('publishedAt', 'desc'),
-    limit(pageSize),
-  ];
-
-  if (lastDoc) {
-    constraints.push(startAfter(lastDoc));
-  }
-
-  return getDocuments<T>(COLLECTIONS.BLOGS, constraints);
-}
 
 export async function getPageBySlug<T extends DocumentData>(
   slug: string
@@ -345,6 +303,13 @@ export async function getLocationsByEmirate<T extends DocumentData>(
   return getDocuments<T>(COLLECTIONS.LOCATIONS, constraints);
 }
 
+export async function getDocumentsByQuery<T extends DocumentData>(
+  collectionName: string,
+  constraints: QueryConstraint[]
+): Promise<T[]> {
+  return getDocuments<T>(collectionName, constraints);
+}
+
 // Timestamp helpers
 export function timestampToDate(timestamp: Timestamp): Date {
   return timestamp.toDate();
@@ -369,3 +334,133 @@ export {
   type DocumentReference,
   type CollectionReference,
 };
+
+// ============================================
+// PAGINATION & QUERY OPTIMIZATION HELPERS
+// ============================================
+
+export interface PaginationOptions {
+  pageSize?: number;
+  orderByField?: string;
+  orderDirection?: 'asc' | 'desc';
+}
+
+export interface PaginatedResult<T> {
+  data: T[];
+  hasMore: boolean;
+  lastDoc: any;
+}
+
+/**
+ * Get paginated documents with automatic limit
+ * Prevents fetching all documents at once
+ */
+export async function getPaginatedDocuments<T extends DocumentData>(
+  collectionName: string,
+  options: PaginationOptions = {},
+  additionalConstraints: QueryConstraint[] = []
+): Promise<PaginatedResult<T>> {
+  const {
+    pageSize = 10, // Default limit
+    orderByField = 'createdAt',
+    orderDirection = 'desc',
+  } = options;
+
+  const db = getFirestoreDb();
+  const collectionRef = collection(db, collectionName);
+
+  const constraints: QueryConstraint[] = [
+    orderBy(orderByField, orderDirection),
+    limit(pageSize + 1), // Fetch one extra to check if there are more
+    ...additionalConstraints,
+  ];
+
+  const q = query(collectionRef, ...constraints);
+  const querySnapshot = await getDocs(q);
+
+  const docs = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as unknown as T[];
+
+  const hasMore = docs.length > pageSize;
+  const data = hasMore ? docs.slice(0, pageSize) : docs;
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 2]; // Second to last (before the extra)
+
+  return {
+    data,
+    hasMore,
+    lastDoc,
+  };
+}
+
+/**
+ * Get published blogs with pagination
+ * Optimized query with automatic limits
+ */
+export async function getPublishedBlogs<T extends DocumentData>(
+  pageSize: number = 10
+): Promise<T[]> {
+  const result = await getPaginatedDocuments<T>(
+    COLLECTIONS.BLOGS,
+    { pageSize, orderByField: 'publishedAt', orderDirection: 'desc' },
+    [where('status', '==', 'published')]
+  );
+  return result.data;
+}
+
+/**
+ * Get published pages with limit
+ */
+export async function getPublishedPages<T extends DocumentData>(
+  maxResults: number = 50
+): Promise<T[]> {
+  return getDocuments<T>(COLLECTIONS.PAGES, [
+    where('status', '==', 'published'),
+    orderBy('updatedAt', 'desc'),
+    limit(maxResults),
+  ]);
+}
+
+/**
+ * Query builder for common patterns
+ */
+export class FirestoreQueryBuilder<T extends DocumentData> {
+  private constraints: QueryConstraint[] = [];
+
+  constructor(private collectionName: string) { }
+
+  whereEqual(field: string, value: any): this {
+    this.constraints.push(where(field, '==', value));
+    return this;
+  }
+
+  whereIn(field: string, values: any[]): this {
+    this.constraints.push(where(field, 'in', values));
+    return this;
+  }
+
+  orderByField(field: string, direction: 'asc' | 'desc' = 'asc'): this {
+    this.constraints.push(orderBy(field, direction));
+    return this;
+  }
+
+  limitTo(count: number): this {
+    this.constraints.push(limit(count));
+    return this;
+  }
+
+  async execute(): Promise<T[]> {
+    return getDocuments<T>(this.collectionName, this.constraints);
+  }
+}
+
+/**
+ * Example usage:
+ * 
+ * const blogs = await new FirestoreQueryBuilder<BlogPost>(COLLECTIONS.BLOGS)
+ *   .whereEqual('status', 'published')
+ *   .orderByField('publishedAt', 'desc')
+ *   .limitTo(10)
+ *   .execute();
+ */

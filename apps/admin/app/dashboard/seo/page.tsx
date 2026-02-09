@@ -120,6 +120,13 @@ export default function SEODashboard() {
                                     <div className="text-muted x-small">Maintain link authority</div>
                                 </div>
                             </a>
+                            <a href="/dashboard/seo/schema" className="btn btn-light border text-start py-3 px-3 d-flex align-items-center gap-3">
+                                <span className="fs-4">📑</span>
+                                <div>
+                                    <div className="fw-bold small">Structured Data</div>
+                                    <div className="text-muted x-small">Manage JSON-LD Schemas</div>
+                                </div>
+                            </a>
                         </div>
                     </div>
 
