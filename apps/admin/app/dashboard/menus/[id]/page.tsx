@@ -47,22 +47,55 @@ export default function EditMenuPage() {
 
 
 
+    const sanitizeItems = (items: MenuItem[]): MenuItem[] => {
+        return items.map(item => {
+            const cleanItem: any = { ...item };
+
+            // Remove undefined values
+            Object.keys(cleanItem).forEach(key => {
+                if (cleanItem[key] === undefined) {
+                    delete cleanItem[key];
+                }
+            });
+
+            // Handle empty strings for optional fields if needed, or leave them
+            if (cleanItem.megaMenuContext === '') {
+                delete cleanItem.megaMenuContext;
+            }
+
+            if (cleanItem.children && cleanItem.children.length > 0) {
+                cleanItem.children = sanitizeItems(cleanItem.children);
+            } else {
+                delete cleanItem.children; // Clean up empty children array if preferable, or keep it. keeping [] is fine usually.
+            }
+
+            return cleanItem;
+        });
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSaving(true);
 
         try {
+            const sanitizedItems = sanitizeItems(items);
             const menuData: Partial<MenuConfig> = {
                 ...formData,
-                items,
+                items: sanitizedItems,
                 updatedAt: new Date(),
             };
 
             await updateDocument(COLLECTIONS.MENUS, menuId, menuData);
+
+            // Force revalidation if possible, or just toast success
+            toast.success('Menu updated successfully');
             router.push('/dashboard/menus');
-        } catch (error) {
+            router.refresh();
+        } catch (error: any) {
             console.error('Failed to update menu:', error);
-            alert('Failed to update menu');
+            // Show more detailed error if available
+            const errorMessage = error?.message || 'Failed to update menu';
+            toast.error(errorMessage);
         } finally {
             setSaving(false);
         }

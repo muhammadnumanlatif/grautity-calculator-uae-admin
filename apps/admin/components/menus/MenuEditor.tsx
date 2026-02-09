@@ -1,8 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MenuItem } from '@gratuity/shared/types';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+
+// StrictModeDroppable.tsx
+export const StrictModeDroppable = ({ children, ...props }: any) => {
+    const [enabled, setEnabled] = useState(false);
+
+    useEffect(() => {
+        const animation = requestAnimationFrame(() => setEnabled(true));
+        return () => {
+            cancelAnimationFrame(animation);
+            setEnabled(false);
+        };
+    }, []);
+
+    if (!enabled) {
+        return null;
+    }
+
+    return <Droppable {...props}>{children}</Droppable>;
+};
 
 interface MenuEditorProps {
     items: MenuItem[];
@@ -115,7 +134,7 @@ export default function MenuEditor({ items, onChange }: MenuEditorProps) {
             </div>
 
             <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="menu-items">
+                <StrictModeDroppable droppableId="menu-items">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} className="menu-list">
                             {localItems.map((item, index) => (
@@ -251,7 +270,7 @@ export default function MenuEditor({ items, onChange }: MenuEditorProps) {
                             {provided.placeholder}
                         </div>
                     )}
-                </Droppable>
+                </StrictModeDroppable>
             </DragDropContext>
 
             {localItems.length === 0 && (
