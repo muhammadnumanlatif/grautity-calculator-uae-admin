@@ -1,3 +1,5 @@
+export * from './blocks';
+export * from './blocks';
 // Contract Types
 export type ContractType = 'unlimited' | 'limited';
 
@@ -95,6 +97,7 @@ export interface Location {
   status: ContentStatus;
   createdAt: Date;
   updatedAt: Date;
+  blocks?: PageBlock[];
 }
 
 // SEO Data
@@ -207,6 +210,7 @@ export interface Page {
   updatedAt: Date;
   createdBy: string;
   updatedBy?: string;
+  blocks?: PageBlock[];
 }
 
 // Blog Post Interface
@@ -235,6 +239,7 @@ export interface BlogPost {
   createdAt: Date;
   updatedAt: Date;
   revisionHistory?: Revision[];
+  blocks?: PageBlock[];
 }
 
 // Featured Image
