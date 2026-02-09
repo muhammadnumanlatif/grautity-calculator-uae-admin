@@ -23,24 +23,22 @@ service cloud.firestore {
     }
 
     // Locations
-    match /locations/{emirateId} {
+    match /locations/{locationId} {
       allow read: if true;
       allow write: if isAdmin();
-      
-      match /areas/{areaId} {
-        allow read: if true;
-        allow write: if isAdmin();
-      }
-      
-      match /freeZones/{zoneId} {
-        allow read: if true;
-        allow write: if isAdmin();
-      }
-      
-      match /landmarks/{landmarkId} {
-        allow read: if true;
-        allow write: if isAdmin();
-      }
+    }
+
+    // Authors (Blog)
+    match /authors/{authorId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Calculations (History/Analytics)
+    match /calculations/{calcId} {
+      allow read: if isAdmin();
+      allow create: if true; // Public can save calculations
+      allow update, delete: if isAdmin();
     }
 
     // SEO Settings

@@ -1,5 +1,6 @@
 import {
   getFirestore,
+
   collection,
   doc,
   getDoc,
@@ -20,6 +21,29 @@ import {
   Firestore,
   onSnapshot,
 } from 'firebase/firestore';
+
+export {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+  limit,
+  startAfter,
+  Timestamp,
+  type DocumentData,
+  type QueryConstraint,
+  type DocumentReference,
+  type CollectionReference,
+  type Firestore,
+  onSnapshot,
+};
 import { getFirebaseApp } from './firebase';
 
 let db: Firestore;
@@ -350,21 +374,7 @@ export function dateToTimestamp(date: Date): Timestamp {
   return Timestamp.fromDate(date);
 }
 
-// Export Firebase Firestore types
-export {
-  collection,
-  doc,
-  query,
-  where,
-  orderBy,
-  limit,
-  startAfter,
-  Timestamp,
-  type DocumentData,
-  type QueryConstraint,
-  type DocumentReference,
-  type CollectionReference,
-};
+
 
 // ============================================
 // PAGINATION & QUERY OPTIMIZATION HELPERS

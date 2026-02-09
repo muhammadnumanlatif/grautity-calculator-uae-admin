@@ -15,6 +15,8 @@ import { toast } from 'react-hot-toast';
 import { FAQItem, InternalLink } from '@gratuity/shared/types';
 import { useEffect } from 'react';
 import { getDocuments, COLLECTIONS } from '@gratuity/firebase-config/firestore';
+import BlockEditor from './BlockEditor';
+import { PageBlock } from '@gratuity/shared';
 
 const contentSchema = z.object({
     title: z.string().min(5, 'Title must be at least 5 characters'),
@@ -24,13 +26,16 @@ const contentSchema = z.object({
     metaTitle: z.string().max(70).optional(),
     metaDescription: z.string().max(160).optional(),
     focusKeyword: z.string().optional(),
+    blocks: z.array(z.any()).optional(),
+    locationType: z.enum(['emirate', 'area', 'free-zone', 'landmark']).optional(),
+    emirate: z.string().optional(),
 });
 
 type ContentFormData = z.infer<typeof contentSchema>;
 
 interface ContentEditorProps {
-    initialData?: Partial<Page | BlogPost>;
-    type: 'page' | 'blog';
+    initialData?: any;
+    type: 'page' | 'blog' | 'location';
     onSave: (data: any) => Promise<void>;
 }
 
@@ -40,6 +45,7 @@ export default function ContentEditor({ initialData, type, onSave }: ContentEdit
     const [isAiLoading, setIsAiLoading] = useState(false);
     const [generatedFaqs, setGeneratedFaqs] = useState<FAQItem[]>([]);
     const [linkSuggestions, setLinkSuggestions] = useState<InternalLink[]>([]);
+    const [blocks, setBlocks] = useState<PageBlock[]>(initialData?.blocks || []);
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<ContentFormData>({
         resolver: zodResolver(contentSchema),
@@ -51,6 +57,8 @@ export default function ContentEditor({ initialData, type, onSave }: ContentEdit
             metaTitle: initialData?.seo?.metaTitle || '',
             metaDescription: initialData?.seo?.metaDescription || '',
             focusKeyword: initialData?.seo?.focusKeyword || '',
+            locationType: initialData?.type || 'emirate',
+            emirate: initialData?.emirate || 'dubai',
         },
     });
 
@@ -110,7 +118,7 @@ export default function ContentEditor({ initialData, type, onSave }: ContentEdit
     const onFormSubmit = async (data: ContentFormData) => {
         setIsSaving(true);
         try {
-            await onSave(data);
+            await onSave({ ...data, blocks });
         } catch (err) {
             console.error('Editor Error:', err);
         } finally {
@@ -128,7 +136,16 @@ export default function ContentEditor({ initialData, type, onSave }: ContentEdit
                             className={`nav-link ${activeTab === 'content' ? 'active' : ''}`}
                             onClick={() => setActiveTab('content')}
                         >
-                            Content
+                            Classic Content
+                        </button>
+                    </li>
+                    <li className="nav-item">
+                        <button
+                            type="button"
+                            className={`nav-link ${activeTab === 'blocks' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('blocks')}
+                        >
+                            Blocks Editor
                         </button>
                     </li>
                     <li className="nav-item">
@@ -190,6 +207,15 @@ export default function ContentEditor({ initialData, type, onSave }: ContentEdit
                                         style={{ height: '450px' }}
                                     />
                                 </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'blocks' && (
+                        <div className="blocks-pane mx-auto" style={{ maxWidth: '1000px' }}>
+                            <div className="card border-0 shadow-sm p-4 rounded-4 mb-4">
+                                <h5 className="fw-bold mb-4">Page Blocks</h5>
+                                <BlockEditor blocks={blocks} onChange={setBlocks} />
                             </div>
                         </div>
                     )}
@@ -310,6 +336,35 @@ export default function ContentEditor({ initialData, type, onSave }: ContentEdit
                                     </div>
                                 )}
                             </div>
+
+                            {type === 'location' && (
+                                <div className="card border-0 shadow-sm p-4 rounded-4 mb-4">
+                                    <h5 className="fw-bold mb-3">Location Context</h5>
+                                    <div className="row g-3">
+                                        <div className="col-md-6">
+                                            <label className="form-label small fw-bold">Location Type</label>
+                                            <select className="form-select border-0 bg-light" {...register('locationType')}>
+                                                <option value="emirate">Emirate</option>
+                                                <option value="area">Area</option>
+                                                <option value="free-zone">Free Zone</option>
+                                                <option value="landmark">Landmark</option>
+                                            </select>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label className="form-label small fw-bold">Parent Emirate</label>
+                                            <select className="form-select border-0 bg-light" {...register('emirate')}>
+                                                <option value="dubai">Dubai</option>
+                                                <option value="abu-dhabi">Abu Dhabi</option>
+                                                <option value="sharjah">Sharjah</option>
+                                                <option value="ajman">Ajman</option>
+                                                <option value="ras-al-khaimah">Ras Al Khaimah</option>
+                                                <option value="fujairah">Fujairah</option>
+                                                <option value="umm-al-quwain">Umm Al Quwain</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="card border-0 shadow-sm p-4 rounded-4">
                                 <h5 className="fw-bold mb-3">Publication Details</h5>

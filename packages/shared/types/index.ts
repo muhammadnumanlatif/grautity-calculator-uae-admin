@@ -95,6 +95,7 @@ export interface Location {
   aeo?: AEOData;
   eeat?: EEATData;
   localSeo?: LocalSEOData;
+  social?: SocialData;
   status: ContentStatus;
   createdAt: Date;
   updatedAt: Date;

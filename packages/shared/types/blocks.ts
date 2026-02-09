@@ -15,7 +15,8 @@ export type BlockType =
     | 'html'
     | 'separator'
     | 'table-of-contents'
-    | 'interlink';
+    | 'interlink'
+    | 'location-list';
 
 export interface BlockHero {
     id: string;
@@ -55,7 +56,7 @@ export interface BlockTable {
     data: {
         title?: string;
         headers: string[];
-        rows: string[][];
+        rows: Array<{ cells: string[] }>;
     };
 }
 
@@ -208,6 +209,18 @@ export interface BlockInterlink {
     };
 }
 
+export interface BlockLocationList {
+    id: string;
+    type: 'location-list';
+    data: {
+        title?: string;
+        subtitle?: string;
+        emirate: string;
+        locationType: 'area' | 'free-zone' | 'landmark' | 'all';
+        columns?: number;
+    };
+}
+
 export type PageBlock =
     | BlockHero
     | BlockCalculator
@@ -225,4 +238,5 @@ export type PageBlock =
     | BlockHTML
     | BlockSeparator
     | BlockTableOfContents
-    | BlockInterlink;
+    | BlockInterlink
+    | BlockLocationList;

@@ -13,12 +13,14 @@ export const revalidate = 3600;
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
-import { getBlogBySlug, getPublishedBlogs, where, orderBy, limit } from '@gratuity/firebase-config/firestore';
-import type { BlogPost } from '@gratuity/shared/types';
+import { getActiveWidgets } from '@/lib/widgets';
+import type { BlogPost, Widget } from '@gratuity/shared/types';
+import WidgetRenderer from '@/components/widgets/WidgetRenderer';
+import { getBlogBySlug, getLatestBlogs } from '@/lib/blog-content';
 
 async function getRelatedPosts(currentSlug: string, category?: string) {
-  // Optimized query with limit - only fetch what we need
-  const blogs = await getPublishedBlogs<BlogPost>(10); // Limit to 10 instead of all
+  // Use cached latest blogs
+  const blogs = await getLatestBlogs(10);
   return blogs.filter(p => p.slug !== currentSlug).slice(0, 3);
 }
 
@@ -27,7 +29,7 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const post = await getBlogBySlug<BlogPost>(params.slug);
+  const post = await getBlogBySlug(params.slug);
   if (!post) {
     return { title: 'Post Not Found' };
   }
@@ -65,7 +67,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getBlogBySlug<BlogPost>(params.slug);
+  const post = await getBlogBySlug(params.slug);
   if (!post) notFound();
 
   const relatedPosts = await getRelatedPosts(post.slug);
@@ -85,6 +87,9 @@ export default async function BlogPostPage({ params }: PageProps) {
       ? post.publishedAt
       : (post.publishedAt as any).toDate?.() || new Date((post.publishedAt as any).seconds * 1000))
     : null;
+
+  // Fetch active widgets for sidebar
+  const activeWidgets = await getActiveWidgets();
 
   return (
     <>
@@ -187,19 +192,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               {/* Sidebar */}
               <aside className="col-lg-4">
                 <div className={styles.sidebar}>
-                  <div className={styles.sidebarCard}>
-                    <h3>Calculate Your Gratuity</h3>
-                    <p>Use our free calculator to estimate your end of service benefits.</p>
-                    <Link href="/#calculator" className="btn btn-primary w-100">
-                      Calculate Now
-                    </Link>
-                  </div>
-
-                  <div className={styles.sidebarCard}>
-                    <h3>Newsletter</h3>
-                    <p>Get the latest UAE labor law updates.</p>
-                    <NewsletterForm variant="blog" />
-                  </div>
+                  <WidgetRenderer widgets={activeWidgets} />
 
                   <div className={styles.sidebarCard}>
                     <h3>Related Articles</h3>

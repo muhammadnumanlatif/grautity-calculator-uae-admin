@@ -1,14 +1,16 @@
-import type { Metadata } from 'next';
+import { cache } from 'react';
+import type { Metadata, Viewport } from 'next';
 import { SITE_CONFIG } from '@gratuity/shared';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ErrorBoundary from '@/components/layout/ErrorBoundary';
 import { getDocument, COLLECTIONS } from '@gratuity/firebase-config/firestore';
 import { SiteSettings } from '@gratuity/shared/types';
+import FirebaseInit from '@/components/FirebaseInit';
 import '@/styles/globals.scss';
 
-// Fetch settings helper
-async function getSiteSettings() {
+// Fetch settings helper with request deduplication
+const getSiteSettings = cache(async () => {
   try {
     const settings = await getDocument<SiteSettings>(COLLECTIONS.SITE_SETTINGS, 'global');
     return settings;
@@ -16,7 +18,14 @@ async function getSiteSettings() {
     console.error('Failed to fetch site settings:', error);
     return null;
   }
-}
+});
+
+export const viewport: Viewport = {
+  themeColor: '#0066cc',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -93,10 +102,8 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <head>
-        <meta name="theme-color" content="#0066cc" />
-      </head>
       <body>
+        <FirebaseInit />
         <ErrorBoundary>
           <Header settings={settings} />
           <main>{children}</main>

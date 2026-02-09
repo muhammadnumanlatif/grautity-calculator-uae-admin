@@ -16,13 +16,13 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-800">
-      <h1 className="text-6xl font-bold text-red-600">Error</h1>
-      <h2 className="text-2xl font-semibold mt-4">Something went wrong!</h2>
-      <p className="text-lg mt-2">We apologize for the inconvenience. Please try again later.</p>
-      <div className="mt-6 flex space-x-4">
+    <div className="d-flex flex-column align-items-center justify-content-center min-vh-100 bg-light text-center px-4">
+      <h1 className="display-1 fw-bold text-danger">Error</h1>
+      <h2 className="h2 fw-semibold mt-4 mb-3">Something went wrong!</h2>
+      <p className="lead text-muted mb-4">We apologize for the inconvenience. Please try again later.</p>
+      <div className="d-flex gap-3 justify-content-center mt-3">
         <button
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
+          className="btn btn-primary btn-lg rounded-pill shadow-sm"
           onClick={
             // Attempt to recover by trying to re-render the segment
             () => reset()
@@ -30,7 +30,7 @@ export default function Error({
         >
           Try again
         </button>
-        <Link href="/" className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition duration-300">
+        <Link href="/" className="btn btn-secondary btn-lg rounded-pill shadow-sm">
           Return Home
         </Link>
       </div>

@@ -50,7 +50,7 @@ export const INITIAL_BLOCKS: Record<PageBlock['type'], PageBlock> = {
         type: 'table',
         data: {
             headers: ['Header 1', 'Header 2'],
-            rows: [['Row 1 Col 1', 'Row 1 Col 2']]
+            rows: [{ cells: ['Row 1 Col 1', 'Row 1 Col 2'] }]
         }
     },
     'cards': {
@@ -140,6 +140,16 @@ export const INITIAL_BLOCKS: Record<PageBlock['type'], PageBlock> = {
             mode: 'manual',
             style: 'list',
             links: []
+        }
+    },
+    'location-list': {
+        id: '',
+        type: 'location-list',
+        data: {
+            title: 'Nearby Areas',
+            emirate: 'dubai',
+            locationType: 'area',
+            columns: 3
         }
     }
 };

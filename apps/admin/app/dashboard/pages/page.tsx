@@ -27,9 +27,9 @@ export default function PagesManager() {
   }, []);
 
   const filteredPages = pages.filter(page => {
-    const matchesSearch = page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      page.slug.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || page.status === statusFilter;
+    const matchesSearch = (page.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (page.slug || '').toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || (page.status || 'draft') === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -117,15 +117,15 @@ export default function PagesManager() {
                 filteredPages.map((page) => (
                   <tr key={page.id} className={styles.tableRow}>
                     <td className="px-4">
-                      <div className="fw-bold text-dark">{page.title}</div>
+                      <div className="fw-bold text-dark">{page.title || 'Untitled Page'}</div>
                       <div className="text-muted x-small">ID: {page.id.substring(0, 8)}...</div>
                     </td>
-                    <td><code className="bg-light px-2 py-1 rounded text-primary" style={{ fontSize: '0.8rem' }}>/{page.slug}</code></td>
+                    <td><code className="bg-light px-2 py-1 rounded text-primary" style={{ fontSize: '0.8rem' }}>/{page.slug || ''}</code></td>
                     <td>
-                      <span className={`badge rounded-pill ${page.status === 'published' ? 'bg-success-subtle text-success' :
-                        page.status === 'draft' ? 'bg-warning-subtle text-warning' : 'bg-secondary-subtle text-secondary'
+                      <span className={`badge rounded-pill ${(page.status || 'draft') === 'published' ? 'bg-success-subtle text-success' :
+                        (page.status || 'draft') === 'draft' ? 'bg-warning-subtle text-warning' : 'bg-secondary-subtle text-secondary'
                         }`}>
-                        {page.status.charAt(0).toUpperCase() + page.status.slice(1)}
+                        {(page.status || 'draft').charAt(0).toUpperCase() + (page.status || 'draft').slice(1)}
                       </span>
                     </td>
                     <td>

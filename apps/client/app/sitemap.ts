@@ -1,250 +1,106 @@
 import { MetadataRoute } from 'next';
-import {
-  SITE_CONFIG,
-  DUBAI_AREAS,
-  DUBAI_FREE_ZONES,
-  DUBAI_LANDMARKS,
-  ABU_DHABI_AREAS,
-  ABU_DHABI_FREE_ZONES,
-  ABU_DHABI_LANDMARKS,
-  SHARJAH_AREAS,
-  SHARJAH_FREE_ZONES,
-  SHARJAH_LANDMARKS,
-  RAK_AREAS,
-  RAK_FREE_ZONES,
-  AJMAN_AREAS,
-  AJMAN_FREE_ZONES,
-  FUJAIRAH_AREAS,
-  FUJAIRAH_FREE_ZONES,
-  FUJAIRAH_LANDMARKS,
-  UAQ_AREAS,
-  UAQ_FREE_ZONES,
-} from '@gratuity/shared';
+import { SITE_CONFIG } from '@gratuity/shared';
+import { getDocuments, COLLECTIONS } from '@gratuity/firebase-config/firestore';
+import { Page, BlogPost, Location } from '@gratuity/shared/types';
 
 const baseUrl = SITE_CONFIG.url;
 
-// Ajman landmarks (defined in page, not shared constants)
-const AJMAN_LANDMARKS = [
-  { slug: 'museum' },
-  { slug: 'corniche' },
-  { slug: 'city-centre' },
-];
+export const revalidate = 3600; // Revalidate every hour
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date().toISOString();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const now = new Date();
 
-  // Main pages
-  const mainPages = [
-    { url: baseUrl, lastModified: now, changeFrequency: 'weekly' as const, priority: 1.0 },
-    { url: `${baseUrl}/mohre-calculator`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.9 },
-    { url: `${baseUrl}/mohre-gratuity-calculator`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.9 },
-    { url: `${baseUrl}/limited-contract`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/unlimited-contract`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/labor-card-check`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/e-signature-card`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.7 },
-    { url: `${baseUrl}/faq`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.8 },
-    { url: `${baseUrl}/blog`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 },
-    { url: `${baseUrl}/contact`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.6 },
-    { url: `${baseUrl}/privacy-policy`, lastModified: now, changeFrequency: 'yearly' as const, priority: 0.3 },
-    { url: `${baseUrl}/terms-of-use`, lastModified: now, changeFrequency: 'yearly' as const, priority: 0.3 },
+  // 1. Static Core Pages (Manual)
+  // These are hardcoded application routes that might not be in the CMS
+  const staticRoutes = [
+    '',
+    '/mohre-calculator',
+    '/mohre-gratuity-calculator',
+    '/limited-contract',
+    '/unlimited-contract',
+    '/labor-card-check',
+    '/e-signature-card',
+    '/faq',
+    '/blog',
+    '/contact',
+    '/privacy-policy',
+    '/terms-of-use',
   ];
 
-  // Free zones hub pages
-  const FREE_ZONE_SLUGS = [
-    'difc', 'adgm', 'jafza', 'dmcc', 'saif-zone', 'hamriyah',
-    'dafza', 'dso', 'tecom', 'rak-ftz', 'ajman-free-zone', 'fujairah-free-zone',
-  ];
-
-  const freeZonesPages = [
-    { url: `${baseUrl}/free-zones`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
-    ...FREE_ZONE_SLUGS.map(slug => ({
-      url: `${baseUrl}/free-zones/${slug}`,
-      lastModified: now,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    })),
-  ];
-
-  // Emirate main pages
-  const emiratePages = [
-    { url: `${baseUrl}/dubai`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.9 },
-    { url: `${baseUrl}/abu-dhabi`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.9 },
-    { url: `${baseUrl}/sharjah`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.9 },
-    { url: `${baseUrl}/ajman`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
-    { url: `${baseUrl}/ras-al-khaimah`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
-    { url: `${baseUrl}/fujairah`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
-    { url: `${baseUrl}/umm-al-quwain`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.8 },
-  ];
-
-  // Dubai pages
-  const dubaiAreas = DUBAI_AREAS.map(area => ({
-    url: `${baseUrl}/dubai/${area.slug}`,
+  const corePages: MetadataRoute.Sitemap = staticRoutes.map(route => ({
+    url: `${baseUrl}${route}`,
     lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
+    changeFrequency: 'monthly',
+    priority: route === '' ? 1.0 : 0.8,
   }));
 
-  const dubaiFreeZones = DUBAI_FREE_ZONES.map(zone => ({
-    url: `${baseUrl}/dubai/free-zones/${zone.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
+  // 2. Fetch Dynamic Content
+  let dynamicPages: MetadataRoute.Sitemap = [];
 
-  const dubaiLandmarks = DUBAI_LANDMARKS.map(landmark => ({
-    url: `${baseUrl}/dubai/landmarks/${landmark.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
+  try {
+    // A. Content Pages
+    const pages = await getDocuments<Page>(COLLECTIONS.PAGES);
+    const pageEntries: MetadataRoute.Sitemap = pages
+      .filter(p => p.status === 'published')
+      .map(page => ({
+        url: `${baseUrl}/${page.slug}`,
+        lastModified: (page.updatedAt as any)?.toDate ? (page.updatedAt as any).toDate() : new Date(page.updatedAt),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      }));
 
-  // Abu Dhabi pages
-  const abuDhabiAreas = ABU_DHABI_AREAS.map(area => ({
-    url: `${baseUrl}/abu-dhabi/${area.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
+    // B. Blog Posts
+    const blogs = await getDocuments<BlogPost>(COLLECTIONS.BLOGS);
+    const blogEntries: MetadataRoute.Sitemap = blogs
+      .filter(b => b.status === 'published')
+      .map(post => ({
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: (post.updatedAt as any)?.toDate ? (post.updatedAt as any).toDate() : new Date(post.updatedAt),
+        changeFrequency: 'weekly',
+        priority: 0.7,
+      }));
 
-  const abuDhabiFreeZones = ABU_DHABI_FREE_ZONES.map(zone => ({
-    url: `${baseUrl}/abu-dhabi/free-zones/${zone.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
+    // C. Locations
+    const locations = await getDocuments<Location>(COLLECTIONS.LOCATIONS);
+    const locationEntries: MetadataRoute.Sitemap = locations
+      .filter(l => l.status === 'published')
+      .map(loc => {
+        let path = '';
+        switch (loc.type) {
+          case 'emirate':
+            path = `/${loc.slug}`;
+            break;
+          case 'area':
+            path = `/${loc.emirate}/${loc.slug}`;
+            break;
+          case 'free-zone':
+            path = `/${loc.emirate}/free-zones/${loc.slug}`;
+            break;
+          case 'landmark':
+            path = `/${loc.emirate}/landmarks/${loc.slug}`;
+            break;
+          default:
+            path = `/${loc.slug}`; // Fallback
+        }
 
-  const abuDhabiLandmarks = ABU_DHABI_LANDMARKS.map(landmark => ({
-    url: `${baseUrl}/abu-dhabi/landmarks/${landmark.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
+        return {
+          url: `${baseUrl}${path}`,
+          lastModified: (loc.updatedAt as any)?.toDate ? (loc.updatedAt as any).toDate() : new Date(loc.updatedAt),
+          changeFrequency: 'monthly',
+          priority: loc.type === 'emirate' ? 0.9 : 0.7,
+        };
+      });
 
-  // Sharjah pages
-  const sharjahAreas = SHARJAH_AREAS.map(area => ({
-    url: `${baseUrl}/sharjah/${area.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
+    dynamicPages = [...pageEntries, ...blogEntries, ...locationEntries];
 
-  const sharjahFreeZones = SHARJAH_FREE_ZONES.map(zone => ({
-    url: `${baseUrl}/sharjah/free-zones/${zone.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
+  } catch (error) {
+    console.error('Failed to generate dynamic sitemap:', error);
+    // Continue with static pages only if DB fails
+  }
 
-  const sharjahLandmarks = SHARJAH_LANDMARKS.map(landmark => ({
-    url: `${baseUrl}/sharjah/landmarks/${landmark.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
+  // Deduplicate: If a static route is also in dynamic (unlikely but safe), prefer dynamic
+  const allEntries = [...corePages, ...dynamicPages];
+  const uniqueEntries = Array.from(new Map(allEntries.map(item => [item.url, item])).values());
 
-  // Ajman pages
-  const ajmanAreas = AJMAN_AREAS.map(area => ({
-    url: `${baseUrl}/ajman/${area.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  const ajmanFreeZones = AJMAN_FREE_ZONES.map(zone => ({
-    url: `${baseUrl}/ajman/free-zones/${zone.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  const ajmanLandmarks = AJMAN_LANDMARKS.map(landmark => ({
-    url: `${baseUrl}/ajman/landmarks/${landmark.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
-
-  // RAK pages
-  const rakAreas = RAK_AREAS.map(area => ({
-    url: `${baseUrl}/ras-al-khaimah/${area.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  const rakFreeZones = RAK_FREE_ZONES.map(zone => ({
-    url: `${baseUrl}/ras-al-khaimah/free-zones/${zone.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  // Fujairah pages
-  const fujairahAreas = FUJAIRAH_AREAS.map(area => ({
-    url: `${baseUrl}/fujairah/${area.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  const fujairahFreeZones = FUJAIRAH_FREE_ZONES.map(zone => ({
-    url: `${baseUrl}/fujairah/free-zones/${zone.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  const fujairahLandmarks = FUJAIRAH_LANDMARKS.map(landmark => ({
-    url: `${baseUrl}/fujairah/landmarks/${landmark.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
-
-  // Umm Al Quwain pages
-  const uaqAreas = UAQ_AREAS.map(area => ({
-    url: `${baseUrl}/umm-al-quwain/${area.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  const uaqFreeZones = UAQ_FREE_ZONES.map(zone => ({
-    url: `${baseUrl}/umm-al-quwain/free-zones/${zone.slug}`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
-
-  return [
-    ...mainPages,
-    ...freeZonesPages,
-    ...emiratePages,
-    // Dubai
-    ...dubaiAreas,
-    ...dubaiFreeZones,
-    ...dubaiLandmarks,
-    // Abu Dhabi
-    ...abuDhabiAreas,
-    ...abuDhabiFreeZones,
-    ...abuDhabiLandmarks,
-    // Sharjah
-    ...sharjahAreas,
-    ...sharjahFreeZones,
-    ...sharjahLandmarks,
-    // Ajman
-    ...ajmanAreas,
-    ...ajmanFreeZones,
-    ...ajmanLandmarks,
-    // RAK
-    ...rakAreas,
-    ...rakFreeZones,
-    // Fujairah
-    ...fujairahAreas,
-    ...fujairahFreeZones,
-    ...fujairahLandmarks,
-    // UAQ
-    ...uaqAreas,
-    ...uaqFreeZones,
-  ];
+  return uniqueEntries;
 }

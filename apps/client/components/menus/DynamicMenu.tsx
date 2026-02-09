@@ -15,10 +15,6 @@ export function DynamicMenu({ menuLocation, className = '', itemClassName = '' }
     const [menu, setMenu] = useState<MenuConfig | null>(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        loadMenu();
-    }, [loadMenu]);
-
     const loadMenu = useCallback(async () => {
         try {
             const response = await fetch(`/api/menus?location=${menuLocation}`);
@@ -32,6 +28,10 @@ export function DynamicMenu({ menuLocation, className = '', itemClassName = '' }
             setLoading(false);
         }
     }, [menuLocation]);
+
+    useEffect(() => {
+        loadMenu();
+    }, [loadMenu]);
 
     if (loading || !menu) {
         return null;

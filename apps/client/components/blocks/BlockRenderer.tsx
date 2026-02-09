@@ -53,6 +53,8 @@ export default function BlockRenderer({ blocks }: BlockRendererProps) {
                         return <TableOfContentsBlock key={index} data={block.data} />;
                     case 'interlink':
                         return <InterlinkBlock key={index} data={block.data} />;
+                    case 'location-list':
+                        return <LocationListBlock key={index} data={block.data} />;
                     default:
                         return null;
                 }
@@ -139,9 +141,9 @@ function TableBlock({ data }: { data: any }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.rows.map((row: string[], idx: number) => (
+                            {data.rows.map((row: { cells: string[] }, idx: number) => (
                                 <tr key={idx}>
-                                    {row.map((cell: string, cellIdx: number) => (
+                                    {row.cells.map((cell: string, cellIdx: number) => (
                                         <td key={cellIdx} dangerouslySetInnerHTML={{ __html: cell }} />
                                     ))}
                                 </tr>
@@ -591,6 +593,54 @@ function InterlinkBlock({ data }: { data: any }) {
             <div className="container">
                 {data.title && <h5 className="mb-3 text-secondary text-uppercase small fw-bold">{data.title}</h5>}
                 {renderContent()}
+            </div>
+        </section>
+    );
+}
+
+function LocationListBlock({ data }: { data: any }) {
+    const [locations, setLocations] = React.useState<any[]>([]);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const fetchLocations = async () => {
+            try {
+                const { getLocationsByEmirate } = await import('@gratuity/firebase-config/firestore');
+                const type = data.locationType === 'all' ? undefined : data.locationType;
+                const result = await getLocationsByEmirate(data.emirate, type);
+                setLocations(result);
+            } catch (err) {
+                console.error('Failed to fetch locations for block:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchLocations();
+    }, [data.emirate, data.locationType]);
+
+    if (loading) return <div className="py-5 text-center text-muted small">Loading locations...</div>;
+    if (locations.length === 0) return null;
+
+    const colClass = data.columns === 2 ? 'col-md-6' : data.columns === 4 ? 'col-lg-3 col-md-4 col-6' : 'col-lg-2 col-md-3 col-4';
+
+    return (
+        <section className="section py-5">
+            <div className="container">
+                {data.title && <h2 className="text-center mb-4">{data.title}</h2>}
+                {data.subtitle && <p className="text-center text-muted mb-4">{data.subtitle}</p>}
+
+                <div className="row g-3 justify-content-center">
+                    {locations.map((loc: any) => (
+                        <div key={loc.id} className={colClass}>
+                            <Link href={`/${loc.emirate}/${loc.slug}`} className="d-flex align-items-center justify-content-between p-3 border rounded text-decoration-none text-dark hover-light transition">
+                                <span className="text-truncate">{loc.name}</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <polyline points="9,18 15,12 9,6" />
+                                </svg>
+                            </Link>
+                        </div>
+                    ))}
+                </div>
             </div>
         </section>
     );

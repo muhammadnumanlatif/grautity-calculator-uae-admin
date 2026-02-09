@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { getDocuments, COLLECTIONS } from '@gratuity/firebase-config/firestore';
 import { Location } from '@gratuity/shared/types';
 
@@ -40,7 +41,7 @@ export default function LocationsManager() {
                 </div>
                 <div className="d-flex gap-2">
                     <button className="btn btn-outline-secondary">Bulk Import</button>
-                    <button className="btn btn-primary">Add Location</button>
+                    <Link href="/dashboard/locations/new" className="btn btn-primary">Add Location</Link>
                 </div>
             </div>
 
@@ -107,7 +108,7 @@ export default function LocationsManager() {
                                             </div>
                                         </td>
                                         <td className="px-4 text-end">
-                                            <button className="btn btn-sm btn-link text-primary text-decoration-none">Edit</button>
+                                            <Link href={`/dashboard/locations/edit/${loc.id}`} className="btn btn-sm btn-link text-primary text-decoration-none">Edit</Link>
                                         </td>
                                     </tr>
                                 ))

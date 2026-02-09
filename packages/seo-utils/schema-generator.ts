@@ -244,6 +244,47 @@ export function generateCalculatorSchema(options: {
   };
 }
 
+// Location/Place Schema
+export function generateLocationSchema(options: {
+  name: string;
+  description: string;
+  url: string;
+  type: string;
+  image?: string;
+  containment?: { name: string; url: string };
+}) {
+  // Map internal types to Schema.org types
+  let schemaType = 'Place';
+  if (options.type === 'emirate' || options.type === 'area') {
+    schemaType = 'AdministrativeArea';
+  } else if (options.type === 'landmark') {
+    schemaType = 'LandmarksOrHistoricalBuildings';
+  }
+
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': schemaType,
+    name: options.name,
+    description: options.description,
+    url: options.url,
+  };
+
+  if (options.image) {
+    schema.image = options.image;
+  }
+
+  // If we have containment info (e.g. Dubai -> UAE)
+  if (options.containment) {
+    schema.containedInPlace = {
+      '@type': 'Place',
+      name: options.containment.name,
+      url: options.containment.url,
+    };
+  }
+
+  return schema;
+}
+
 // Combine multiple schemas
 export function combineSchemas(schemas: object[]): string {
   if (schemas.length === 1) {
