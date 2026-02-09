@@ -77,6 +77,12 @@ export default function MenuPreview({ items, location }: MenuPreviewProps) {
                     bottom: 0;
                     width: 100%;
                 }
+                :global(.dropdown-preview:hover .mega-preview-content) {
+                    display: block !important;
+                }
+                :global(.mega-preview-content) {
+                    display: none;
+                }
             `}</style>
         </div>
     );
@@ -111,11 +117,32 @@ function PreviewItem({ item, isFooter = false }: { item: MenuItem; isFooter?: bo
     }
 
     if (item.type === 'mega_menu') {
+        const layoutIcon = {
+            'emirates_grid': '🗺️',
+            'calculators_list': '🧮',
+            'services_columns': '📑'
+        }[item.megaMenuContext || ''] || '📄';
+
         return (
-            <span className={baseClass}>
-                {item.label} ▾
-                <span className="badge bg-info ms-1">Mega</span>
-            </span>
+            <div className="d-inline-block dropdown-preview position-relative">
+                <span className={`${baseClass} cursor-pointer`}>
+                    {item.label} ▾
+                    <span className="badge bg-info ms-1" style={{ fontSize: '0.6rem' }}>MEGA</span>
+                </span>
+                <div className="mega-preview-content position-absolute bg-white shadow-lg border rounded p-2 mt-2" style={{ width: '250px', zIndex: 10, left: 0 }}>
+                    <div className="d-flex align-items-center gap-2 mb-2 border-bottom pb-2">
+                        <span className="fs-5">{layoutIcon}</span>
+                        <span className="fw-bold small text-dark">
+                            {item.megaMenuContext ? item.megaMenuContext.replace('_', ' ').toUpperCase() : 'NO LAYOUT'}
+                        </span>
+                    </div>
+                    <div className="preview-placeholders d-flex gap-1 flex-wrap">
+                        {[1, 2, 3, 4].map(i => (
+                            <div key={i} className="bg-light rounded flex-fill" style={{ height: '30px', width: '45%' }}></div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         );
     }
 

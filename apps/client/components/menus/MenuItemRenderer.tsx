@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { MenuItem } from '@gratuity/shared/types';
-import { UAE_EMIRATES, DUBAI_AREAS, DUBAI_FREE_ZONES, ABU_DHABI_AREAS, ABU_DHABI_FREE_ZONES, SHARJAH_AREAS, SHARJAH_FREE_ZONES } from '@gratuity/shared';
+import { MegaMenu } from './MegaMenu';
 
 interface MenuItemRendererProps {
     item: MenuItem;
@@ -72,10 +72,10 @@ export function MenuItemRenderer({ item, className = '', isNested = false }: Men
                         </span>
                     )}
                 </button>
-                <ul className="dropdown-menu">
+                <ul className="dropdown-menu shadow-sm border-0 rounded-3 mt-2">
                     {item.children.map((child) => (
                         <li key={child.id}>
-                            <MenuItemRenderer item={child} className="dropdown-item" isNested={true} />
+                            <MenuItemRenderer item={child} className="dropdown-item py-2 px-3" isNested={true} />
                         </li>
                     ))}
                 </ul>
@@ -86,12 +86,13 @@ export function MenuItemRenderer({ item, className = '', isNested = false }: Men
     // Handle mega menu items
     if (item.type === 'mega_menu') {
         return (
-            <div className="dropdown mega-menu-dropdown">
-                <button className={`${className} dropdown-toggle`} data-bs-toggle="dropdown">
+            <div className="dropdown mega-menu-dropdown position-static">
+                <button className={`${className} dropdown-toggle`} data-bs-toggle="dropdown" aria-expanded="false">
                     {item.label}
+                    <span className="badge bg-primary text-white ms-1 rounded-pill" style={{ fontSize: '0.6rem', padding: '0.2rem 0.5rem', verticalAlign: 'text-top' }}>NEW</span>
                 </button>
-                <div className="dropdown-menu mega-menu p-4">
-                    <MegaMenuContent context={item.megaMenuContext} />
+                <div className="dropdown-menu mega-menu w-100 shadow-lg border-0 mt-0 py-0 rounded-0 rounded-bottom" style={{ left: 0 }}>
+                    <MegaMenu context={item.megaMenuContext} />
                 </div>
             </div>
         );
@@ -105,7 +106,7 @@ export function MenuItemRenderer({ item, className = '', isNested = false }: Men
                 className={className}
                 target={item.target}
             >
-                {item.icon && <span dangerouslySetInnerHTML={{ __html: item.icon }} />}
+                {item.icon && <span dangerouslySetInnerHTML={{ __html: item.icon }} className="me-1" />}
                 {item.label}
                 {item.badge && (
                     <span className={`badge bg-${item.badgeColor || 'primary'} ms-2`}>
@@ -117,99 +118,4 @@ export function MenuItemRenderer({ item, className = '', isNested = false }: Men
     }
 
     return null;
-}
-
-// Mega Menu Content Renderer
-function MegaMenuContent({ context }: { context?: string }) {
-    if (context === 'emirates_grid') {
-        return (
-            <div className="row g-4">
-                {Object.entries(UAE_EMIRATES).map(([key, emirate]) => (
-                    <div key={key} className="col-md-4">
-                        <h6 className="fw-bold mb-3">
-                            <Link href={`/${emirate.slug}`} className="text-decoration-none text-dark">
-                                {emirate.name}
-                            </Link>
-                        </h6>
-                        <div className="small">
-                            <div className="mb-2 text-muted">Popular Areas</div>
-                            {key === 'dubai' && DUBAI_AREAS.slice(0, 3).map((area) => (
-                                <div key={area.slug}>
-                                    <Link href={`/dubai/${area.slug}`} className="text-muted text-decoration-none d-block py-1">
-                                        {area.name}
-                                    </Link>
-                                </div>
-                            ))}
-                            {key === 'abu-dhabi' && ABU_DHABI_AREAS.slice(0, 3).map((area) => (
-                                <div key={area.slug}>
-                                    <Link href={`/abu-dhabi/${area.slug}`} className="text-muted text-decoration-none d-block py-1">
-                                        {area.name}
-                                    </Link>
-                                </div>
-                            ))}
-                            {key === 'sharjah' && SHARJAH_AREAS.slice(0, 3).map((area) => (
-                                <div key={area.slug}>
-                                    <Link href={`/sharjah/${area.slug}`} className="text-muted text-decoration-none d-block py-1">
-                                        {area.name}
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        );
-    }
-
-    if (context === 'calculators_list') {
-        const calculators = [
-            { name: 'Gratuity Calculator', url: '/', icon: '🧮' },
-            { name: 'MOHRE Calculator', url: '/mohre-calculator', icon: '📊' },
-            { name: 'Unlimited Contract', url: '/unlimited-contract', icon: '📝' },
-            { name: 'Limited Contract', url: '/limited-contract', icon: '📄' },
-            { name: 'DIFC Calculator', url: '/dubai/free-zones/difc', icon: '🏢' },
-            { name: 'ADGM Calculator', url: '/abu-dhabi/free-zones/adgm', icon: '🏛️' },
-        ];
-
-        return (
-            <div className="row g-3">
-                {calculators.map((calc) => (
-                    <div key={calc.url} className="col-md-6">
-                        <Link href={calc.url} className="d-flex align-items-center gap-2 text-decoration-none p-2 rounded hover-bg-light">
-                            <span style={{ fontSize: '1.5rem' }}>{calc.icon}</span>
-                            <span className="fw-medium">{calc.name}</span>
-                        </Link>
-                    </div>
-                ))}
-            </div>
-        );
-    }
-
-    if (context === 'services_columns') {
-        return (
-            <div className="row g-4">
-                <div className="col-md-3">
-                    <h6 className="fw-bold mb-3">Calculators</h6>
-                    <Link href="/" className="d-block text-muted text-decoration-none py-1">Gratuity Calculator</Link>
-                    <Link href="/mohre-calculator" className="d-block text-muted text-decoration-none py-1">MOHRE Calculator</Link>
-                </div>
-                <div className="col-md-3">
-                    <h6 className="fw-bold mb-3">Resources</h6>
-                    <Link href="/blog" className="d-block text-muted text-decoration-none py-1">Blog</Link>
-                    <Link href="/faq" className="d-block text-muted text-decoration-none py-1">FAQ</Link>
-                </div>
-                <div className="col-md-3">
-                    <h6 className="fw-bold mb-3">Legal</h6>
-                    <Link href="/privacy-policy" className="d-block text-muted text-decoration-none py-1">Privacy Policy</Link>
-                    <Link href="/terms-of-use" className="d-block text-muted text-decoration-none py-1">Terms of Use</Link>
-                </div>
-                <div className="col-md-3">
-                    <h6 className="fw-bold mb-3">Support</h6>
-                    <Link href="/contact" className="d-block text-muted text-decoration-none py-1">Contact Us</Link>
-                </div>
-            </div>
-        );
-    }
-
-    return <div className="text-muted">Mega menu content</div>;
 }

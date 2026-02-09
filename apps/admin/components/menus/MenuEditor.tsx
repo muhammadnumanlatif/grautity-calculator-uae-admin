@@ -190,17 +190,25 @@ export default function MenuEditor({ items, onChange }: MenuEditorProps) {
                                                 )}
 
                                                 {item.type === 'mega_menu' && (
-                                                    <div className="col-md-12">
-                                                        <select
-                                                            className="form-select form-select-sm"
-                                                            value={item.megaMenuContext || ''}
-                                                            onChange={(e) => updateItem(item.id, { megaMenuContext: e.target.value as any })}
-                                                        >
-                                                            <option value="">Select Mega Menu Layout...</option>
-                                                            <option value="emirates_grid">Emirates Grid</option>
-                                                            <option value="calculators_list">Calculators List</option>
-                                                            <option value="services_columns">Services Columns</option>
-                                                        </select>
+                                                    <div className="col-md-12 mt-2">
+                                                        <label className="form-label small fw-bold text-muted">Layout Configuration</label>
+                                                        <div className="d-flex gap-2">
+                                                            {[
+                                                                { id: 'emirates_grid', label: 'Emirates Grid', icon: '🗺️' },
+                                                                { id: 'calculators_list', label: 'Calculators', icon: '🧮' },
+                                                                { id: 'services_columns', label: 'Services', icon: '📑' }
+                                                            ].map((layout) => (
+                                                                <div
+                                                                    key={layout.id}
+                                                                    className={`card p-2 cursor-pointer flex-fill text-center transition-all ${item.megaMenuContext === layout.id ? 'border-primary bg-primary-subtle' : 'border-light hover-border'}`}
+                                                                    style={{ cursor: 'pointer' }}
+                                                                    onClick={() => updateItem(item.id, { megaMenuContext: layout.id as any })}
+                                                                >
+                                                                    <div className="fs-4 mb-1">{layout.icon}</div>
+                                                                    <div className="small fw-medium">{layout.label}</div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                 )}
 
@@ -278,6 +286,10 @@ export default function MenuEditor({ items, onChange }: MenuEditorProps) {
                     No items yet. Click &quot;Add Item&quot; to start building your menu.
                 </div>
             )}
+            <style>{`
+                .hover-border:hover { border-color: var(--bs-primary) !important; background-color: #f8f9fa; }
+                .transition-all { transition: all 0.2s ease; }
+            `}</style>
         </div>
     );
 }
