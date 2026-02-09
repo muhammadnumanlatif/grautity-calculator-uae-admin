@@ -49,6 +49,20 @@ export async function getDocument<T extends DocumentData>(
   collectionName: string,
   documentId: string
 ): Promise<T | null> {
+  // Use Admin SDK on server if available to bypass permission issues during build
+  if (typeof window === 'undefined') {
+    try {
+      const { adminDb } = await import('./admin');
+      const docSnap = await adminDb.collection(collectionName).doc(documentId).get();
+      if (docSnap.exists) {
+        return { id: docSnap.id, ...docSnap.data() } as unknown as T;
+      }
+      return null;
+    } catch (e) {
+      console.warn('Admin SDK fetch failed, falling back to client SDK:', e);
+    }
+  }
+
   const db = getFirestoreDb();
   const docRef = doc(db, collectionName, documentId);
   const docSnap = await getDoc(docRef);
@@ -63,6 +77,26 @@ export async function getDocuments<T extends DocumentData>(
   collectionName: string,
   constraints: QueryConstraint[] = []
 ): Promise<T[]> {
+  // Use Admin SDK on server if available to bypass permission issues during build
+  if (typeof window === 'undefined') {
+    try {
+      const { adminDb } = await import('./admin');
+      let queryRef: any = adminDb.collection(collectionName);
+
+      // Note: We can only support basic constraints without a full mapper
+      // But for generateStaticParams, getDocuments is often called without constraints
+      if (constraints.length === 0) {
+        const snapshot = await queryRef.get();
+        return snapshot.docs.map((doc: any) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as unknown as T[];
+      }
+    } catch (e) {
+      console.warn('Admin SDK fetch failed, falling back to client SDK:', e);
+    }
+  }
+
   const db = getFirestoreDb();
   const collectionRef = collection(db, collectionName);
   const q = query(collectionRef, ...constraints);
@@ -134,8 +168,32 @@ export async function getPublishedPages<T extends DocumentData>(): Promise<T[]> 
 
 export async function getPublishedBlogs<T extends DocumentData>(
   pageSize: number = 10,
-  lastDoc?: DocumentData
+  lastDoc?: any
 ): Promise<T[]> {
+  // Use Admin SDK on server
+  if (typeof window === 'undefined') {
+    try {
+      const { adminDb } = await import('./admin');
+      let queryRef: any = adminDb
+        .collection(COLLECTIONS.BLOGS)
+        .where('status', '==', 'published')
+        .orderBy('publishedAt', 'desc')
+        .limit(pageSize);
+
+      if (lastDoc) {
+        queryRef = queryRef.startAfter(lastDoc);
+      }
+
+      const snapshot = await queryRef.get();
+      return snapshot.docs.map((doc: any) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as unknown as T[];
+    } catch (e) {
+      console.warn('Admin SDK fetch failed for getPublishedBlogs:', e);
+    }
+  }
+
   const constraints: QueryConstraint[] = [
     where('status', '==', 'published'),
     orderBy('publishedAt', 'desc'),
@@ -162,6 +220,26 @@ export async function getPageBySlug<T extends DocumentData>(
 export async function getBlogBySlug<T extends DocumentData>(
   slug: string
 ): Promise<T | null> {
+  // Use Admin SDK on server
+  if (typeof window === 'undefined') {
+    try {
+      const { adminDb } = await import('./admin');
+      const snapshot = await adminDb
+        .collection(COLLECTIONS.BLOGS)
+        .where('slug', '==', slug)
+        .limit(1)
+        .get();
+
+      if (!snapshot.empty) {
+        const doc = snapshot.docs[0];
+        return { id: doc.id, ...doc.data() } as unknown as T;
+      }
+      return null;
+    } catch (e) {
+      console.warn('Admin SDK fetch failed for getBlogBySlug:', e);
+    }
+  }
+
   const blogs = await getDocuments<T>(COLLECTIONS.BLOGS, [
     where('slug', '==', slug),
     limit(1),
