@@ -1,0 +1,163 @@
+.featureIcon {
+  width: 60px;
+  height: 60px;
+  background: #e6f0ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formulaBox {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  height: 100%;
+}
+
+.formula {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border: 2px dashed #0066cc;
+}
+
+.formulaText {
+  font-family: monospace;
+  font-size: 1.125rem;
+  color: #212529;
+}
+
+.calculationSteps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.calculationSteps li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.calculationStepsTotal {
+  font-weight: 700;
+  color: #0066cc;
+  border-bottom: none !important;
+  padding-top: 1rem;
+}
+
+.contractCard {
+  text-align: center;
+}
+
+.contractIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.contractIconUnlimited {
+  background: #e6f0ff;
+  color: #0066cc;
+}
+
+.contractIconLimited {
+  background: #fff8e6;
+  color: #c9a227;
+}
+
+.contractFeatures {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.contractFeatures li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.contractFeatures li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #198754;
+}
+
+.emirateCard {
+  display: block;
+  text-align: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.emirateCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.emirateIcon {
+  width: 48px;
+  height: 48px;
+  background: #e6f0ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: #0066cc;
+}
+
+.emirateCard h5 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.emirateLink {
+  font-size: 0.875rem;
+  color: #0066cc;
+}
+
+.freeZoneTags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.freeZoneTag {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  color: #495057;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.freeZoneTag:hover {
+  background: #0066cc;
+  color: white;
+  border-color: #0066cc;
+}
+
+.freeZoneTagViewAll {
+  background: #0066cc;
+  color: white;
+  border-color: #0066cc;
+}

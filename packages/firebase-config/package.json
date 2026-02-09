@@ -1,0 +1,28 @@
+{
+  "name": "@gratuity/firebase-config",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./firebase": "./firebase.ts",
+    "./firestore": "./firestore.ts",
+    "./auth": "./auth.ts",
+    "./storage": "./storage.ts",
+    "./admin": "./admin.ts",
+    "./blob": "./blob.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "firebase": "^10.8.0",
+    "firebase-admin": "^11.11.1",
+    "@vercel/blob": "^0.22.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

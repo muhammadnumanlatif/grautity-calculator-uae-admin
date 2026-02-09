@@ -1,0 +1,211 @@
+.pageHero {
+  background: linear-gradient(135deg, #c9a227 0%, #9a7b0a 100%);
+  color: white;
+  padding: 8rem 0 4rem;
+  margin-top: 120px;
+}
+@media (max-width: 991px) { .pageHero { margin-top: 70px; } }
+@media (max-width: 768px) { .pageHero { padding: 6rem 0 3rem; } }
+
+.pageHero h1 { color: white; font-size: 2.5rem; margin-bottom: 1rem; }
+@media (max-width: 768px) { .pageHero h1 { font-size: 1.75rem; } }
+
+.lead { font-size: 1.25rem; opacity: 0.9; max-width: 700px; }
+
+.heroBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.badgeItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+}
+
+.infoSidebar {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  height: 100%;
+}
+@media (max-width: 768px) { .infoSidebar { margin-top: 2rem; } }
+
+.ruleCard {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #dee2e6;
+}
+
+.ruleCardMaxCap {
+  background: #fff3cd;
+  border-color: #ffc107;
+}
+
+.ruleHeader {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6c757d;
+}
+
+.ruleValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #c9a227;
+}
+
+.ruleCard p {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.moreInfo {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #dee2e6;
+}
+
+.moreInfo h5 {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sectionTitle h2 {
+  margin-bottom: 0.5rem;
+}
+
+.sectionTitle p {
+  color: #6c757d;
+}
+
+.stepsContainer {
+  counter-reset: step;
+}
+
+.stepItem {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.stepItem:last-child {
+  border-bottom: none;
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: #c9a227;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.stepContent h5 {
+  margin-bottom: 0.5rem;
+}
+
+.stepContent p {
+  margin: 0;
+  color: #6c757d;
+}
+
+.exampleCard {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  height: 100%;
+}
+
+.exampleCard h5 {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #c9a227;
+}
+
+.exampleData {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.exampleData p {
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.calculation {
+  font-size: 0.875rem;
+}
+
+.calcRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.calcRowTotal {
+  font-weight: 700;
+  color: #c9a227;
+  font-size: 1rem;
+  border-bottom: none;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  border-top: 2px solid #c9a227;
+}
+
+.noteCard {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  height: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.noteIcon {
+  width: 56px;
+  height: 56px;
+  background: #fef7e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: #c9a227;
+}
+
+.noteCard h5 {
+  margin-bottom: 0.5rem;
+}
+
+.noteCard p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6c757d;
+}

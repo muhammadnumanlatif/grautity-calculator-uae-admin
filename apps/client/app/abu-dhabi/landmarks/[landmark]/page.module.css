@@ -1,0 +1,263 @@
+.pageHero {
+  background: linear-gradient(135deg, #c9a227 0%, #a68523 100%);
+  color: white;
+  padding: 8rem 0 4rem;
+  margin-top: 120px;
+}
+
+@media (max-width: 991px) {
+  .pageHero { margin-top: 70px; }
+}
+
+@media (max-width: 768px) {
+  .pageHero { padding: 6rem 0 3rem; }
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb li:not(:last-child)::after {
+  content: '/';
+  margin-left: 0.5rem;
+  opacity: 0.7;
+}
+
+.breadcrumb a {
+  color: white;
+  text-decoration: none;
+}
+
+.heroContent {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (max-width: 576px) {
+  .heroContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.heroIcon {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.pageHero h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .pageHero h1 { font-size: 1.75rem; }
+}
+
+.lead {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.contentCard {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.contentCard h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+  color: #212529;
+}
+
+.contentCard p {
+  color: #495057;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.infoBox {
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+.infoBox h5 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.infoBox ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.infoBox li {
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.employersList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.employerItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+}
+
+.sectorsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.sectorTag {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  background: #fff8e1;
+  color: #a68523;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.ctaCard {
+  background: linear-gradient(135deg, #c9a227 0%, #a68523 100%);
+  color: white;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.ctaCard h3 {
+  color: white;
+  margin-bottom: 0.75rem;
+}
+
+.ctaCard p {
+  color: white;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+}
+
+.sidebarCard {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.sidebarCard h3 {
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.infoItem:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.infoValue {
+  font-weight: 600;
+  color: #212529;
+}
+
+.nearbyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nearbyItem {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: #212529;
+  transition: all 0.2s ease;
+}
+
+.nearbyItem:hover {
+  background: #e9ecef;
+  color: #c9a227;
+}
+
+.relatedList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.relatedItem {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: #212529;
+  transition: all 0.2s ease;
+}
+
+.relatedItem:hover {
+  background: #e9ecef;
+  color: #c9a227;
+}
+
+.relatedIcon {
+  font-size: 1.25rem;
+}
+
+.relatedItem span:nth-child(2) {
+  flex: 1;
+}

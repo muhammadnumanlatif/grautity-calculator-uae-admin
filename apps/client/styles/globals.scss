@@ -1,0 +1,476 @@
+// Import custom variables and Bootstrap
+@import 'bootstrap-custom';
+
+// Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+// Base Styles
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $text-primary;
+  background-color: $body-bg;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Headings
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $font-family-heading;
+  font-weight: $font-weight-bold;
+  color: $text-primary;
+  margin-bottom: 1rem;
+}
+
+h1, .h1 {
+  font-size: $h1-font-size;
+  line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+h2, .h2 {
+  font-size: $h2-font-size;
+
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+  }
+}
+
+// Sections
+.section {
+  padding: 5rem 0;
+
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+
+  h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.75rem;
+    }
+  }
+
+  p {
+    font-size: 1.125rem;
+    color: $text-secondary;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.section-light {
+  background-color: $section-bg-light;
+}
+
+.section-dark {
+  background-color: $section-bg-dark;
+  color: $text-light;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $text-light;
+  }
+
+  p {
+    color: rgba($white, 0.85);
+  }
+}
+
+// Buttons
+.btn {
+  font-weight: $font-weight-medium;
+  padding: 0.75rem 1.5rem;
+  border-radius: $border-radius;
+  transition: $transition-base;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $box-shadow;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-primary {
+  background: $primary;
+  border-color: $primary;
+
+  &:hover {
+    background: $primary-dark;
+    border-color: $primary-dark;
+  }
+}
+
+.btn-secondary {
+  background: $secondary;
+  border-color: $secondary;
+  color: $white;
+
+  &:hover {
+    background: $secondary-dark;
+    border-color: $secondary-dark;
+    color: $white;
+  }
+}
+
+.btn-outline-primary {
+  color: $primary;
+  border-color: $primary;
+
+  &:hover {
+    background: $primary;
+    color: $white;
+  }
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+// Cards
+.card {
+  border: none;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow;
+  transition: $transition-base;
+
+  &:hover {
+    box-shadow: $box-shadow-lg;
+    transform: translateY(-5px);
+  }
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+// Forms
+.form-control {
+  padding: 0.75rem 1rem;
+  border-radius: $border-radius;
+  border: 1px solid $gray-300;
+  transition: $transition-base;
+
+  &:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 0.25rem rgba($primary, 0.15);
+  }
+}
+
+.form-label {
+  font-weight: $font-weight-medium;
+  color: $text-primary;
+  margin-bottom: 0.5rem;
+}
+
+.form-select {
+  padding: 0.75rem 1rem;
+  border-radius: $border-radius;
+  border: 1px solid $gray-300;
+
+  &:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 0.25rem rgba($primary, 0.15);
+  }
+}
+
+// Calculator Styles
+.calculator-wrapper {
+  background: $calculator-bg;
+  border-radius: $border-radius-xl;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+}
+
+.calculator-card {
+  background: $calculator-card-bg;
+  border-radius: $border-radius-lg;
+  padding: 2rem;
+  box-shadow: $box-shadow-lg;
+}
+
+.calculator-result {
+  background: $calculator-result-bg;
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+
+  .result-amount {
+    font-size: 2.5rem;
+    font-weight: $font-weight-bold;
+    color: $primary;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
+
+  .result-label {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+// Hero Section
+.hero {
+  padding: 6rem 0 4rem;
+  margin-top: 120px; // Account for fixed header (top bar + navbar)
+  background: linear-gradient(135deg, $primary 0%, $primary-dark 100%);
+  color: $white;
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 991px) {
+    margin-top: 70px; // Top bar hidden on mobile, only navbar
+  }
+
+  @media (max-width: 768px) {
+    padding: 4rem 0 3rem;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/images/pattern.svg') repeat;
+    opacity: 0.1;
+  }
+
+  h1 {
+    color: $white;
+    font-size: 3rem;
+    font-weight: $font-weight-bold;
+    margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.125rem;
+    }
+  }
+}
+
+// Trust Badges
+.trust-badges {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2rem;
+
+  .badge-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: $font-size-sm;
+    color: rgba($white, 0.9);
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}
+
+// FAQ Accordion
+.faq-section {
+  .accordion-item {
+    border: none;
+    margin-bottom: 1rem;
+    border-radius: $border-radius !important;
+    overflow: hidden;
+    box-shadow: $box-shadow-sm;
+  }
+
+  .accordion-button {
+    font-weight: $font-weight-medium;
+    font-size: 1.125rem;
+    padding: 1.25rem 1.5rem;
+    background: $white;
+
+    &:not(.collapsed) {
+      background: $gray-100;
+      color: $primary;
+      box-shadow: none;
+    }
+
+    &:focus {
+      box-shadow: none;
+      border-color: transparent;
+    }
+  }
+
+  .accordion-body {
+    padding: 1.25rem 1.5rem;
+    line-height: 1.7;
+    color: $text-secondary;
+  }
+}
+
+// Footer
+.footer {
+  background: $gray-900;
+  color: $gray-400;
+  padding: 4rem 0 2rem;
+
+  h5 {
+    color: $white;
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+  }
+
+  a {
+    color: $gray-400;
+    text-decoration: none;
+    transition: $transition-fast;
+
+    &:hover {
+      color: $white;
+    }
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid $gray-800;
+    padding-top: 2rem;
+    margin-top: 3rem;
+    font-size: $font-size-sm;
+  }
+}
+
+// Utilities
+.text-gradient {
+  background: linear-gradient(135deg, $primary 0%, $secondary 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, $primary 0%, $primary-dark 100%);
+}
+
+.shadow-soft {
+  box-shadow: $box-shadow;
+}
+
+.shadow-hover {
+  transition: $transition-base;
+
+  &:hover {
+    box-shadow: $box-shadow-lg;
+    transform: translateY(-5px);
+  }
+}
+
+// Breadcrumb
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 1.5rem;
+
+  .breadcrumb-item {
+    font-size: $font-size-sm;
+
+    a {
+      color: $text-secondary;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+
+    &.active {
+      color: $text-primary;
+    }
+
+    + .breadcrumb-item::before {
+      content: '›';
+      color: $text-secondary;
+    }
+  }
+}
+
+// Loading Spinner
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid $gray-200;
+  border-top-color: $primary;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// AOS Animations customization
+[data-aos] {
+  pointer-events: none;
+
+  &.aos-animate {
+    pointer-events: auto;
+  }
+}
+
+// Responsive Utilities
+.hide-mobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.show-mobile {
+  display: none !important;
+
+  @media (max-width: 768px) {
+    display: block !important;
+  }
+}

@@ -1,0 +1,523 @@
+.footer {
+  background: #1a1a2e;
+  color: #a8a8b3;
+}
+
+/* Newsletter Section */
+.footerNewsletter {
+  background: linear-gradient(135deg, #0066cc 0%, #004999 100%);
+  padding: 2.5rem 0;
+}
+
+.newsletterContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.newsletterText h4 {
+  color: white;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.newsletterText p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.newsletterForm {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.newsletterForm input {
+  padding: 0.75rem 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.9rem;
+  width: 280px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.newsletterForm input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.newsletterForm input:focus {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.newsletterForm button {
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: #0066cc;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.newsletterForm button:hover {
+  background: #f0f0f0;
+}
+
+.newsletterForm button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #0066cc;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.errorBtn {
+  background: #c62828 !important;
+}
+
+/* Main Footer */
+.footerMain {
+  padding: 4rem 0 2rem;
+}
+
+.footerDesktop {
+  display: block;
+}
+
+.footerMobile {
+  display: none;
+}
+
+.brandLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  margin-bottom: 1rem;
+}
+
+.brandText {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: white;
+}
+
+.brandBadge {
+  background: #c9a227;
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.footerDescription {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.footerContact {
+  margin-bottom: 1.5rem;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #a8a8b3;
+  text-decoration: none;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s;
+}
+
+.contactItem:hover {
+  color: white;
+}
+
+.contactItemWhatsapp:hover {
+  color: #25d366;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: #a8a8b3;
+  transition: all 0.2s;
+}
+
+.socialLink:hover {
+  background: #0066cc;
+  color: white;
+}
+
+.columnTitle {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footerLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerLinks li {
+  margin-bottom: 0.625rem;
+}
+
+.footerLinks a {
+  color: #a8a8b3;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.footerLinks a:hover {
+  color: white;
+}
+
+.viewAll {
+  color: #0066cc !important;
+}
+
+.appDownload {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.appLabel {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+  color: #6c757d;
+}
+
+.appButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.appBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.375rem;
+  color: #a8a8b3;
+  text-decoration: none;
+  font-size: 0.75rem;
+  transition: all 0.2s;
+}
+
+.appBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Official Resources */
+.footerResources {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem 0;
+}
+
+.footerResources h6 {
+  color: #6c757d;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.resourceLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.resourceLinks a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+  color: #a8a8b3;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.resourceLinks a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.resourceIcon {
+  font-size: 1.25rem;
+}
+
+/* Trust Badges */
+.footerTrust {
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.trustBadges {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.trustBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6c757d;
+  font-size: 0.8125rem;
+}
+
+.trustBadge svg {
+  color: #0066cc;
+}
+
+/* Footer Bottom */
+.footerBottom {
+  padding: 1.5rem 0;
+}
+
+.footerBottomContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footerBottomLeft p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #6c757d;
+}
+
+.legalNote {
+  margin-top: 0.25rem !important;
+  font-size: 0.75rem !important;
+}
+
+.langSelector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.langSelector button {
+  padding: 0.375rem 0.75rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+  color: #6c757d;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.langSelector button:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #a8a8b3;
+}
+
+.langSelectorActive {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+}
+
+/* Mobile Footer Styles */
+.footerBrandMobile {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footerBrandMobile p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.mobileAccordions {
+  margin-bottom: 1.5rem;
+}
+
+.mobileAccordion {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.accordionToggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.accordionToggle svg {
+  transition: transform 0.3s;
+  color: #6c757d;
+}
+
+.accordionToggleOpen svg {
+  transform: rotate(180deg);
+}
+
+.accordionContent {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.accordionContentOpen {
+  max-height: 400px;
+}
+
+.accordionContent a {
+  display: block;
+  padding: 0.625rem 0;
+  padding-left: 1rem;
+  color: #a8a8b3;
+  text-decoration: none;
+  font-size: 0.9375rem;
+}
+
+.mobileContact {
+  margin-bottom: 1.5rem;
+}
+
+.whatsappBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem;
+  background: #25d366;
+  color: white;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.mobileSocial {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.mobileSocial a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: #a8a8b3;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .newsletterContent {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .newsletterForm {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .newsletterForm input {
+    width: 100%;
+  }
+
+  .footerDesktop {
+    display: none;
+  }
+
+  .footerMobile {
+    display: block;
+  }
+
+  .trustBadges {
+    gap: 1rem;
+  }
+
+  .trustBadge {
+    flex: 0 0 calc(50% - 0.5rem);
+    justify-content: center;
+  }
+
+  .footerBottomContent {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575px) {
+  .resourceLinks {
+    gap: 0.75rem;
+  }
+
+  .resourceLinks a {
+    flex: 0 0 calc(50% - 0.375rem);
+    justify-content: center;
+  }
+}

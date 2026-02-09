@@ -1,0 +1,106 @@
+.pageHero {
+  background: linear-gradient(135deg, #455a64 0%, #37474f 100%);
+  color: white;
+  padding: 8rem 0 4rem;
+  margin-top: 120px;
+}
+@media (max-width: 991px) { .pageHero { margin-top: 70px; } }
+@media (max-width: 768px) { .pageHero { padding: 6rem 0 3rem; } }
+
+.pageHero h1 { color: white; font-size: 2.5rem; margin-bottom: 1rem; }
+@media (max-width: 768px) { .pageHero h1 { font-size: 1.75rem; } }
+
+.lead { font-size: 1.25rem; opacity: 0.9; max-width: 700px; }
+
+.content {
+  background: white;
+  padding: 3rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 768px) {
+  .content { padding: 1.5rem; }
+}
+
+.lastUpdated {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.content h2 {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: #37474f;
+}
+
+.content h2:first-of-type {
+  margin-top: 0;
+}
+
+.content h3 {
+  font-size: 1.15rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #455a64;
+}
+
+.content p {
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.content ul {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+  color: #444;
+}
+
+.content a {
+  color: #0277bd;
+}
+
+.content a:hover {
+  text-decoration: underline;
+}
+
+.importantBox {
+  background: #fff3e0;
+  border-left: 4px solid #ff6f00;
+  padding: 1.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin: 1.5rem 0;
+}
+
+.importantBox h3 {
+  margin-top: 0;
+  color: #e65100;
+}
+
+.importantBox ul {
+  margin-bottom: 0;
+}
+
+.agreementBox {
+  background: #e3f2fd;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.agreementBox p {
+  margin-bottom: 0;
+  font-weight: 500;
+  color: #0277bd;
+}

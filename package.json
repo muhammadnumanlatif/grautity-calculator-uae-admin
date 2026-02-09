@@ -1,0 +1,28 @@
+{
+  "name": "gratuity-calculator-uae",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:client": "turbo run dev --filter=client",
+    "dev:admin": "turbo run dev --filter=admin",
+    "build": "turbo run build",
+    "build:client": "turbo run build --filter=client",
+    "build:admin": "turbo run build --filter=admin",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "npm@10.2.0"
+}

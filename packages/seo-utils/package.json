@@ -1,0 +1,23 @@
+{
+  "name": "@gratuity/seo-utils",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./schema-generator": "./schema-generator.ts",
+    "./meta-generator": "./meta-generator.ts",
+    "./analyzer": "./analyzer.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@gratuity/shared": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

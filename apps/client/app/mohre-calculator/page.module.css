@@ -1,0 +1,237 @@
+.pageHero {
+  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+  color: white;
+  padding: 8rem 0 4rem;
+  margin-top: 120px;
+}
+@media (max-width: 991px) { .pageHero { margin-top: 70px; } }
+@media (max-width: 768px) { .pageHero { padding: 6rem 0 3rem; } }
+
+.mohreBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.pageHero h1 { color: white; font-size: 2.5rem; margin-bottom: 1rem; }
+@media (max-width: 768px) { .pageHero h1 { font-size: 1.75rem; } }
+.lead { font-size: 1.25rem; opacity: 0.9; max-width: 700px; }
+
+.mohreInfo {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  height: 100%;
+}
+@media (max-width: 768px) { .mohreInfo { margin-top: 2rem; } }
+
+.mohreLogoBadge {
+  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.mohreText {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.mohreSubtext {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.9;
+  margin-top: 0.25rem;
+}
+
+.mohreList {
+  padding-left: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.mohreList li {
+  margin-bottom: 0.5rem;
+}
+
+.mohreContact {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #dee2e6;
+}
+
+.mohreContact h5 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.contactList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contactList li {
+  padding: 0.25rem 0;
+}
+
+.formulaCard {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.formulaBox {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.formulaHeader {
+  margin-bottom: 1rem;
+}
+
+.formulaYears {
+  display: inline-block;
+  background: #1a237e;
+  color: white;
+  padding: 0.25rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.formulaContent {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border: 2px dashed #1a237e;
+}
+
+.formulaContent code {
+  font-size: 1rem;
+  color: #1a237e;
+}
+
+.formulaNote {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.formulaNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #fff3cd;
+  border-radius: 0.5rem;
+}
+
+.formulaNotice svg {
+  flex-shrink: 0;
+  color: #856404;
+}
+
+.formulaNotice p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #856404;
+}
+
+.entitlementCard {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  height: 100%;
+}
+
+.entitlementCardHighlight {
+  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+  color: white;
+}
+
+.entitlementYears {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.entitlementPercentage {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.entitlementCard p {
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+.serviceCard {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  height: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.serviceIcon {
+  width: 64px;
+  height: 64px;
+  background: #e8eaf6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: #1a237e;
+}
+
+.serviceCard h5 {
+  margin-bottom: 0.5rem;
+}
+
+.serviceCard p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.emirateLinkCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: #212529;
+  transition: all 0.3s ease;
+}
+
+.emirateLinkCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+  color: #1a237e;
+}

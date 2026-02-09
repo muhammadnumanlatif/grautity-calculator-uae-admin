@@ -1,0 +1,27 @@
+.tableRow {
+    transition: background-color 0.2s ease;
+}
+
+.tableRow:hover {
+    background-color: rgba(0, 102, 204, 0.02);
+}
+
+.pagesContainer :global(.progress) {
+    background-color: #f0f2f5;
+    border-radius: 10px;
+}
+
+.pagesContainer :global(.badge-success-subtle) {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.pagesContainer :global(.badge-warning-subtle) {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.pagesContainer :global(.badge-secondary-subtle) {
+    background-color: #e2e3e5;
+    color: #41464b;
+}
