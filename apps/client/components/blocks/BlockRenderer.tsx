@@ -458,10 +458,11 @@ function TableOfContentsBlock({ data }: { data: any }) {
 
     const [headings, setHeadings] = React.useState<Array<{ id: string, text: string, level: string }>>([]);
 
+    const selector = includedTags.join(',');
+
     React.useEffect(() => {
         // Wait for DOM to stabilize
         const timer = setTimeout(() => {
-            const selector = includedTags.join(',');
             const elements = document.querySelectorAll(selector);
             const items: Array<{ id: string, text: string, level: string }> = [];
 
@@ -479,7 +480,7 @@ function TableOfContentsBlock({ data }: { data: any }) {
         }, 500); // Small delay to ensuring other blocks render
 
         return () => clearTimeout(timer);
-    }, [includedTags.join(',')]);
+    }, [selector]);
 
     if (headings.length === 0) return null;
 

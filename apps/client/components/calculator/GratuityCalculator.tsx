@@ -105,7 +105,7 @@ function GratuityCalculatorInner({
   }, [reset]);
 
   // Main calculation handler
-  const onSubmit = async (data: GratuityInputData) => {
+  const onSubmit = useCallback(async (data: GratuityInputData) => {
     // Clear previous errors/warnings
     clearError();
     setResult(null);
@@ -168,7 +168,7 @@ function GratuityCalculatorInner({
     } finally {
       setIsCalculating(false);
     }
-  };
+  }, [clearError, onCalculationError, onCalculationComplete]);
 
   // Retry calculation
   const handleRetry = useCallback(() => {
