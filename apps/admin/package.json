@@ -10,29 +10,32 @@
     "clean": "rm -rf .next node_modules"
   },
   "dependencies": {
-    "@gratuity/shared": "*",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@gratuity/firebase-config": "*",
     "@gratuity/seo-utils": "*",
+    "@gratuity/shared": "*",
+    "@hookform/resolvers": "^3.3.4",
+    "bootstrap": "^5.3.3",
+    "date-fns": "^3.3.1",
+    "firebase": "^10.8.0",
     "next": "14.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "bootstrap": "^5.3.3",
-    "firebase": "^10.8.0",
-    "zod": "^3.22.4",
     "react-hook-form": "^7.51.0",
-    "@hookform/resolvers": "^3.3.4",
-    "date-fns": "^3.3.1",
+    "react-hot-toast": "^2.4.1",
     "react-quill": "^2.0.0",
     "recharts": "^2.12.2",
-    "react-hot-toast": "^2.4.1"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
-    "typescript": "^5.3.3",
-    "sass": "^1.71.1",
     "eslint": "^8.57.0",
-    "eslint-config-next": "14.2.3"
+    "eslint-config-next": "14.2.3",
+    "sass": "^1.71.1",
+    "typescript": "^5.3.3"
   }
 }
