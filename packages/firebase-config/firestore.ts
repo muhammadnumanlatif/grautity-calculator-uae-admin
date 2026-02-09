@@ -18,6 +18,7 @@ import {
   DocumentReference,
   CollectionReference,
   Firestore,
+  onSnapshot,
 } from 'firebase/firestore';
 import { getFirebaseApp } from './firebase';
 
@@ -308,6 +309,36 @@ export async function getDocumentsByQuery<T extends DocumentData>(
   constraints: QueryConstraint[]
 ): Promise<T[]> {
   return getDocuments<T>(collectionName, constraints);
+}
+
+/**
+ * Realtime subscription to documents
+ * @returns unsubscribe function
+ */
+export function subscribeToDocuments<T extends DocumentData>(
+  collectionName: string,
+  constraints: QueryConstraint[],
+  onUpdate: (data: T[]) => void,
+  onError?: (error: any) => void
+) {
+  const db = getFirestoreDb();
+  const collectionRef = collection(db, collectionName);
+  const q = query(collectionRef, ...constraints);
+
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as unknown as T[];
+      onUpdate(data);
+    },
+    (error) => {
+      console.error(`Error in subscription to ${collectionName}:`, error);
+      if (onError) onError(error);
+    }
+  );
 }
 
 // Timestamp helpers
