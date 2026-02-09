@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageBlock } from '@gratuity/shared/types';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { INITIAL_BLOCKS } from '@/constants/blocks';
@@ -15,6 +15,25 @@ interface BlockEditorProps {
     blocks: PageBlock[];
     onChange: (blocks: PageBlock[]) => void;
 }
+
+// StrictModeDroppable.tsx
+export const StrictModeDroppable = ({ children, ...props }: any) => {
+    const [enabled, setEnabled] = useState(false);
+
+    useEffect(() => {
+        const animation = requestAnimationFrame(() => setEnabled(true));
+        return () => {
+            cancelAnimationFrame(animation);
+            setEnabled(false);
+        };
+    }, []);
+
+    if (!enabled) {
+        return null;
+    }
+
+    return <Droppable {...props}>{children}</Droppable>;
+};
 
 export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
     const [expandedBlocks, setExpandedBlocks] = useState<Record<string, boolean>>({});
@@ -54,8 +73,8 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
     return (
         <div className="block-editor">
             <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="page-blocks">
-                    {(provided) => (
+                <StrictModeDroppable droppableId="page-blocks">
+                    {(provided: any) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} className="blocks-list mb-4">
                             {blocks.map((block, index) => (
                                 <Draggable key={block.id} draggableId={block.id} index={index}>
@@ -67,21 +86,24 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
                                         >
                                             <div className="card-header bg-white border-bottom-0 py-3 d-flex align-items-center justify-content-between">
                                                 <div className="d-flex align-items-center gap-3">
-                                                    <div {...provided.dragHandleProps} className="drag-handle text-muted" style={{ cursor: 'grab' }}>
-                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                            <circle cx="9" cy="5" r="1" /><circle cx="9" cy="12" r="1" /><circle cx="9" cy="19" r="1" />
-                                                            <circle cx="15" cy="5" r="1" /><circle cx="15" cy="12" r="1" /><circle cx="15" cy="19" r="1" />
+                                                    <div {...provided.dragHandleProps} className="drag-handle text-secondary hover-primary transition" style={{ cursor: 'grab' }}>
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" opacity="0.5" />
+                                                            <circle cx="9" cy="9" r="1" fill="currentColor" />
+                                                            <circle cx="9" cy="15" r="1" fill="currentColor" />
+                                                            <circle cx="15" cy="9" r="1" fill="currentColor" />
+                                                            <circle cx="15" cy="15" r="1" fill="currentColor" />
                                                         </svg>
                                                     </div>
                                                     <div>
-                                                        <span className="badge bg-primary-subtle text-primary border border-primary-subtle uppercase ls-1 mr-2" style={{ fontSize: '0.65rem' }}>
+                                                        <span className="badge bg-light text-dark border fw-bold text-uppercase ls-1 me-2" style={{ fontSize: '0.65rem' }}>
                                                             {block.type}
                                                         </span>
-                                                        <span className="fw-bold small">{(block.data as any).title || (block.data as any).text || (block.type === 'hero' ? (block.data as any).title : 'Block Content')}</span>
+                                                        <span className="fw-bold text-dark">{(block.data as any).title || (block.data as any).text || (block.type === 'hero' ? (block.data as any).title : 'Block Content')}</span>
                                                     </div>
                                                 </div>
                                                 <div className="d-flex gap-2">
-                                                    <button type="button" className="btn btn-sm btn-light" onClick={() => toggleExpand(block.id)}>
+                                                    <button type="button" className="btn btn-sm btn-light border" onClick={() => toggleExpand(block.id)}>
                                                         {expandedBlocks[block.id] ? 'Collapse' : 'Edit'}
                                                     </button>
                                                     <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => removeBlock(block.id)}>
@@ -95,11 +117,11 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
                                                     {block.type === 'hero' && (
                                                         <div className="row g-3">
                                                             <div className="col-12">
-                                                                <label className="form-label small fw-bold">Title</label>
+                                                                <label className="form-label small fw-bold text-dark">Title</label>
                                                                 <input type="text" className="form-control" value={block.data.title || ''} onChange={e => updateBlockData(block.id, { title: e.target.value })} />
                                                             </div>
                                                             <div className="col-12">
-                                                                <label className="form-label small fw-bold">Subtitle</label>
+                                                                <label className="form-label small fw-bold text-dark">Subtitle</label>
                                                                 <textarea className="form-control" rows={2} value={block.data.subtitle || ''} onChange={e => updateBlockData(block.id, { subtitle: e.target.value })} />
                                                             </div>
                                                         </div>
@@ -107,8 +129,8 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
 
                                                     {block.type === 'rich-text' && (
                                                         <div className="col-12">
-                                                            <label className="form-label small fw-bold">Content</label>
-                                                            <div className="bg-white rounded">
+                                                            <label className="form-label small fw-bold text-dark">Content</label>
+                                                            <div className="bg-white rounded border">
                                                                 <ReactQuill
                                                                     theme="snow"
                                                                     value={block.data.content || ''}
@@ -121,14 +143,14 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
                                                     {block.type === 'calculator' && (
                                                         <div className="row g-3">
                                                             <div className="col-md-6">
-                                                                <label className="form-label small fw-bold">Default Contract Type</label>
+                                                                <label className="form-label small fw-bold text-dark">Default Contract Type</label>
                                                                 <select className="form-select" value={block.data.defaultContractType || ''} onChange={e => updateBlockData(block.id, { defaultContractType: e.target.value })}>
                                                                     <option value="unlimited">Unlimited</option>
                                                                     <option value="limited">Limited</option>
                                                                 </select>
                                                             </div>
                                                             <div className="col-md-6">
-                                                                <label className="form-label small fw-bold">Title Overlay (Optional)</label>
+                                                                <label className="form-label small fw-bold text-dark">Title Overlay (Optional)</label>
                                                                 <input type="text" className="form-control" value={block.data.title || ''} onChange={e => updateBlockData(block.id, { title: e.target.value })} />
                                                             </div>
                                                         </div>
@@ -136,9 +158,9 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
 
                                                     {block.type === 'faq' && (
                                                         <div className="faq-editor">
-                                                            <label className="form-label small fw-bold">FAQ Items</label>
+                                                            <label className="form-label small fw-bold text-dark">FAQ Items</label>
                                                             {(block.data.items || []).map((faq: any, i: number) => (
-                                                                <div key={i} className="mb-3 p-3 border rounded bg-white position-relative">
+                                                                <div key={i} className="mb-3 p-3 border rounded bg-white position-relative shadow-sm">
                                                                     <button type="button" className="btn-close position-absolute top-0 end-0 m-2" style={{ fontSize: '0.6rem' }} onClick={() => {
                                                                         const newItems = [...block.data.items];
                                                                         newItems.splice(i, 1);
@@ -156,20 +178,20 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
                                                                     }} />
                                                                 </div>
                                                             ))}
-                                                            <button type="button" className="btn btn-sm btn-outline-secondary w-100" onClick={() => {
+                                                            <button type="button" className="btn btn-sm btn-white border w-100 fw-bold text-primary" onClick={() => {
                                                                 const newItems = [...(block.data.items || []), { question: '', answer: '' }];
                                                                 updateBlockData(block.id, { items: newItems });
-                                                            }}>+ Add FAQ</button>
+                                                            }}>+ Add FAQ Item</button>
                                                         </div>
                                                     )}
 
                                                     {block.type === 'table' && (
                                                         <div className="table-editor">
                                                             <div className="mb-3">
-                                                                <label className="form-label small fw-bold">Headers (comma separated)</label>
+                                                                <label className="form-label small fw-bold text-dark">Headers (comma separated)</label>
                                                                 <input type="text" className="form-control" value={block.data.headers?.join(', ') || ''} onChange={e => updateBlockData(block.id, { headers: e.target.value.split(',').map(s => s.trim()) })} />
                                                             </div>
-                                                            <label className="form-label small fw-bold">Rows</label>
+                                                            <label className="form-label small fw-bold text-dark">Rows</label>
                                                             {(block.data.rows || []).map((row: any, i: number) => (
                                                                 <div key={i} className="d-flex gap-2 mb-2 align-items-center">
                                                                     <span className="text-muted small">Row {i + 1}</span>
@@ -187,7 +209,7 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
                                                                     }}>×</button>
                                                                 </div>
                                                             ))}
-                                                            <button type="button" className="btn btn-sm btn-outline-secondary w-100" onClick={() => {
+                                                            <button type="button" className="btn btn-sm btn-white border w-100 fw-bold text-primary" onClick={() => {
                                                                 const colCount = block.data.headers?.length || 2;
                                                                 const newRows = [...(block.data.rows || []), { cells: Array(colCount).fill('') }];
                                                                 updateBlockData(block.id, { rows: newRows });
@@ -198,18 +220,18 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
                                                     {block.type === 'cta' && (
                                                         <div className="cta-editor row g-3">
                                                             <div className="col-12">
-                                                                <label className="form-label small fw-bold">Title</label>
+                                                                <label className="form-label small fw-bold text-dark">Title</label>
                                                                 <input type="text" className="form-control" value={block.data.title || ''} onChange={e => updateBlockData(block.id, { title: e.target.value })} />
                                                             </div>
                                                             <div className="col-12">
-                                                                <label className="form-label small fw-bold">Button Label</label>
+                                                                <label className="form-label small fw-bold text-dark">Button Label</label>
                                                                 <input type="text" className="form-control mb-2" value={block.data.buttons?.[0]?.label || ''} onChange={e => {
                                                                     const newBtns = [...(block.data.buttons || [])];
                                                                     if (!newBtns[0]) newBtns[0] = { label: '', url: '', variant: 'primary' };
                                                                     newBtns[0].label = e.target.value;
                                                                     updateBlockData(block.id, { buttons: newBtns });
                                                                 }} />
-                                                                <label className="form-label small fw-bold">Button URL</label>
+                                                                <label className="form-label small fw-bold text-dark">Button URL</label>
                                                                 <input type="text" className="form-control" value={block.data.buttons?.[0]?.url || ''} onChange={e => {
                                                                     const newBtns = [...(block.data.buttons || [])];
                                                                     if (!newBtns[0]) newBtns[0] = { label: '', url: '', variant: 'primary' };
@@ -225,7 +247,7 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
                                                         <div className="alert alert-warning py-2 small mb-0">
                                                             Editor for <strong>{block.type}</strong> is under development.
                                                             <div className="mt-2">
-                                                                <label className="form-label x-small fw-bold">Raw JSON Data</label>
+                                                                <label className="form-label x-small fw-bold text-dark">Raw JSON Data</label>
                                                                 <textarea className="form-control form-control-sm font-monospace" rows={5} value={JSON.stringify(block.data, null, 2)} onChange={e => {
                                                                     try { updateBlockData(block.id, JSON.parse(e.target.value)); } catch (e) { }
                                                                 }} />
@@ -241,19 +263,19 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
                             {provided.placeholder}
                         </div>
                     )}
-                </Droppable>
+                </StrictModeDroppable>
             </DragDropContext>
 
-            <div className="add-block-zone bg-white p-4 rounded-4 border-dashed border-2 text-center">
-                <h6 className="fw-bold mb-3">Add Content Block</h6>
+            <div className="add-block-zone bg-light p-4 rounded-4 border border-2 border-dashed text-center">
+                <h6 className="fw-bold mb-3 text-dark">Add Content Block</h6>
                 <div className="d-flex flex-wrap gap-2 justify-content-center">
-                    <button type="button" className="btn btn-sm btn-outline-primary px-3" onClick={() => addBlock('hero')}>+ Hero</button>
-                    <button type="button" className="btn btn-sm btn-outline-primary px-3" onClick={() => addBlock('rich-text')}>+ Text</button>
-                    <button type="button" className="btn btn-sm btn-outline-primary px-3" onClick={() => addBlock('calculator')}>+ Calculator</button>
-                    <button type="button" className="btn btn-sm btn-outline-primary px-3" onClick={() => addBlock('faq')}>+ FAQ</button>
-                    <button type="button" className="btn btn-sm btn-outline-primary px-3" onClick={() => addBlock('table')}>+ Table</button>
-                    <button type="button" className="btn btn-sm btn-outline-primary px-3" onClick={() => addBlock('cta')}>+ CTA</button>
-                    <button type="button" className="btn btn-sm btn-outline-primary px-3" onClick={() => addBlock('cards')}>+ Cards</button>
+                    <button type="button" className="btn btn-sm btn-white border shadow-sm px-3 fw-medium text-dark hover-primary" onClick={() => addBlock('hero')}>+ Hero</button>
+                    <button type="button" className="btn btn-sm btn-white border shadow-sm px-3 fw-medium text-dark hover-primary" onClick={() => addBlock('rich-text')}>+ Text</button>
+                    <button type="button" className="btn btn-sm btn-white border shadow-sm px-3 fw-medium text-dark hover-primary" onClick={() => addBlock('calculator')}>+ Calculator</button>
+                    <button type="button" className="btn btn-sm btn-white border shadow-sm px-3 fw-medium text-dark hover-primary" onClick={() => addBlock('faq')}>+ FAQ</button>
+                    <button type="button" className="btn btn-sm btn-white border shadow-sm px-3 fw-medium text-dark hover-primary" onClick={() => addBlock('table')}>+ Table</button>
+                    <button type="button" className="btn btn-sm btn-white border shadow-sm px-3 fw-medium text-dark hover-primary" onClick={() => addBlock('cta')}>+ CTA</button>
+                    <button type="button" className="btn btn-sm btn-white border shadow-sm px-3 fw-medium text-dark hover-primary" onClick={() => addBlock('cards')}>+ Cards</button>
                 </div>
             </div>
 
@@ -261,8 +283,8 @@ export default function BlockEditor({ blocks, onChange }: BlockEditorProps) {
                 .drag-handle { cursor: grab; }
                 .border-dashed { border-style: dashed !important; border-color: #dee2e6 !important; }
                 .ls-1 { letter-spacing: 0.05rem; }
-                .uppercase { text-transform: uppercase; }
-                .x-small { font-size: 0.7rem; }
+                .hover-primary:hover { color: var(--bs-primary) !important; border-color: var(--bs-primary) !important; }
+                .btn-white { background-color: white; }
             `}</style>
         </div>
     );
