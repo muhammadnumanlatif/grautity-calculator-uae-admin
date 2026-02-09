@@ -210,6 +210,26 @@ export async function getPublishedBlogs<T extends DocumentData>(
 export async function getPageBySlug<T extends DocumentData>(
   slug: string
 ): Promise<T | null> {
+  // Use Admin SDK on server
+  if (typeof window === 'undefined') {
+    try {
+      const { adminDb } = await import('./admin');
+      const snapshot = await adminDb
+        .collection(COLLECTIONS.PAGES)
+        .where('slug', '==', slug)
+        .limit(1)
+        .get();
+
+      if (!snapshot.empty) {
+        const doc = snapshot.docs[0];
+        return { id: doc.id, ...doc.data() } as unknown as T;
+      }
+      return null;
+    } catch (e) {
+      console.warn('Admin SDK fetch failed for getPageBySlug:', e);
+    }
+  }
+
   const pages = await getDocuments<T>(COLLECTIONS.PAGES, [
     where('slug', '==', slug),
     limit(1),
@@ -251,6 +271,27 @@ export async function getLocationBySlug<T extends DocumentData>(
   slug: string,
   emirate?: string
 ): Promise<T | null> {
+  // Use Admin SDK on server
+  if (typeof window === 'undefined') {
+    try {
+      const { adminDb } = await import('./admin');
+      let queryRef: any = adminDb.collection(COLLECTIONS.LOCATIONS).where('slug', '==', slug);
+
+      if (emirate) {
+        queryRef = queryRef.where('emirate', '==', emirate);
+      }
+
+      const snapshot = await queryRef.limit(1).get();
+      if (!snapshot.empty) {
+        const doc = snapshot.docs[0];
+        return { id: doc.id, ...doc.data() } as unknown as T;
+      }
+      return null;
+    } catch (e) {
+      console.warn('Admin SDK fetch failed for getLocationBySlug:', e);
+    }
+  }
+
   const constraints: QueryConstraint[] = [
     where('slug', '==', slug),
   ];
@@ -269,6 +310,29 @@ export async function getLocationsByEmirate<T extends DocumentData>(
   emirate: string,
   type?: string
 ): Promise<T[]> {
+  // Use Admin SDK on server
+  if (typeof window === 'undefined') {
+    try {
+      const { adminDb } = await import('./admin');
+      let queryRef: any = adminDb
+        .collection(COLLECTIONS.LOCATIONS)
+        .where('emirate', '==', emirate)
+        .where('status', '==', 'published');
+
+      if (type) {
+        queryRef = queryRef.where('type', '==', type);
+      }
+
+      const snapshot = await queryRef.get();
+      return snapshot.docs.map((doc: any) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as unknown as T[];
+    } catch (e) {
+      console.warn('Admin SDK fetch failed for getLocationsByEmirate:', e);
+    }
+  }
+
   const constraints: QueryConstraint[] = [
     where('emirate', '==', emirate),
     where('status', '==', 'published'),
