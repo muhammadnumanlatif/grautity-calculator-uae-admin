@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { MenuConfig, MenuItem } from '@gratuity/shared/types';
 import { MenuItemRenderer } from './MenuItemRenderer';
@@ -17,9 +17,9 @@ export function DynamicMenu({ menuLocation, className = '', itemClassName = '' }
 
     useEffect(() => {
         loadMenu();
-    }, [menuLocation]);
+    }, [loadMenu]);
 
-    const loadMenu = async () => {
+    const loadMenu = useCallback(async () => {
         try {
             const response = await fetch(`/api/menus?location=${menuLocation}`);
             if (response.ok) {
@@ -31,7 +31,7 @@ export function DynamicMenu({ menuLocation, className = '', itemClassName = '' }
         } finally {
             setLoading(false);
         }
-    };
+    }, [menuLocation]);
 
     if (loading || !menu) {
         return null;

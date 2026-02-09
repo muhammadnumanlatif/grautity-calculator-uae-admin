@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { PageBlock } from '@gratuity/shared';
+import Image from 'next/image';
 import GratuityCalculator from '@/components/calculator/GratuityCalculator';
 import FAQSection from '@/components/sections/FAQSection';
 import { useInterlinks } from '@/lib/hooks/useInterlinks';
@@ -238,9 +239,10 @@ function ImageBlock({ data }: { data: any }) {
     }[data.alignment as string] || 'text-center';
 
     const img = (
+        /* eslint-disable-next-line @next/next/no-img-element */
         <img
             src={data.url}
-            alt={data.alt}
+            alt={data.alt || 'Page Content Image'}
             width={data.width}
             height={data.height}
             className={`img-fluid ${data.alignment === 'full-width' ? 'w-100' : ''} rounded shadow-sm`}
@@ -475,7 +477,7 @@ function TableOfContentsBlock({ data }: { data: any }) {
         }, 500); // Small delay to ensuring other blocks render
 
         return () => clearTimeout(timer);
-    }, [includedTags]);
+    }, [includedTags.join(',')]);
 
     if (headings.length === 0) return null;
 

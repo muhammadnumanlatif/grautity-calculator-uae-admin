@@ -142,6 +142,7 @@ export default function Header({ settings }: HeaderProps) {
           <div className={`container ${styles.navbarContainer}`}>
             <Link href="/" className={styles.navbarBrand}>
               {logoUrl ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
                 <img src={logoUrl} alt={siteName} className={styles.brandLogo} style={{ height: '40px', objectFit: 'contain' }} />
               ) : (
                 <>

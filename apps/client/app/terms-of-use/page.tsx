@@ -57,7 +57,7 @@ export default function TermsOfUsePage() {
 
                 <h2>1. Acceptance of Terms</h2>
                 <p>
-                  By accessing and using UAE Gratuity Calculator ("Website"), you accept and agree to
+                  By accessing and using UAE Gratuity Calculator (&quot;Website&quot;), you accept and agree to
                   be bound by these Terms of Use. If you do not agree to these terms, please do not
                   use our Website.
                 </p>
@@ -112,7 +112,7 @@ export default function TermsOfUsePage() {
                 <ul>
                   <li>Provide accurate information when using the calculator</li>
                   <li>Use the Website for lawful purposes only</li>
-                  <li>Not attempt to interfere with the Website's operation</li>
+                  <li>Not attempt to interfere with the Website&apos;s operation</li>
                   <li>Not copy, reproduce, or distribute Website content without permission</li>
                   <li>Verify calculation results before making any decisions</li>
                 </ul>

@@ -212,7 +212,7 @@ export default async function DubaiAreaPage({
                     <li>Follows UAE Federal Labor Law</li>
                     <li>21 days salary per year (first 5 years)</li>
                     <li>30 days salary per year (after 5 years)</li>
-                    <li>Maximum: 2 years' total salary</li>
+                    <li>Maximum: 2 years&apos; total salary</li>
                     <li>Minimum: 1 year of service required</li>
                   </ul>
                 </div>

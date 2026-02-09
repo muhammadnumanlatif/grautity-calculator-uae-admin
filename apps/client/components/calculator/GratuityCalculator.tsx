@@ -175,7 +175,7 @@ function GratuityCalculatorInner({
     setShowRetryPrompt(false);
     setCalculationError(null);
     handleSubmit(onSubmit)();
-  }, [handleSubmit]);
+  }, [handleSubmit, onSubmit]);
 
   return (
     <div className="calculator-wrapper">

@@ -204,7 +204,7 @@ export default function FreeZonesPage() {
                   <ul>
                     <li>21 days salary for first 5 years</li>
                     <li>30 days salary after 5 years</li>
-                    <li>Maximum 2 years' total salary</li>
+                    <li>Maximum 2 years&apos; total salary</li>
                   </ul>
                 </div>
                 <div className={`${styles.ruleCard} ${styles.special}`}>

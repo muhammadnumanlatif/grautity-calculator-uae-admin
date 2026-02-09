@@ -46,7 +46,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
               <div className="display-1 text-danger mb-3">⚠️</div>
               <h1 className="fw-bold h2">Something went wrong</h1>
               <p className="text-muted">
-                We encountered an unexpected error. Don't worry, your data is safe.
+                We encountered an unexpected error. Don&apos;t worry, your data is safe.
               </p>
             </div>
 

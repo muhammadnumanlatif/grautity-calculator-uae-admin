@@ -57,7 +57,7 @@ export default function PrivacyPolicyPage() {
 
                 <h2>1. Introduction</h2>
                 <p>
-                  Welcome to UAE Gratuity Calculator ("we," "our," or "us"). We are committed to protecting
+                  Welcome to UAE Gratuity Calculator (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We are committed to protecting
                   your personal information and your right to privacy. This Privacy Policy explains how we
                   collect, use, disclose, and safeguard your information when you visit our website.
                 </p>
@@ -137,7 +137,7 @@ export default function PrivacyPolicyPage() {
                   <li>Request data portability</li>
                 </ul>
 
-                <h2>9. Children's Privacy</h2>
+                <h2>9. Children&apos;s Privacy</h2>
                 <p>
                   Our website is not intended for children under 16 years of age. We do not knowingly
                   collect personal information from children.
@@ -146,7 +146,7 @@ export default function PrivacyPolicyPage() {
                 <h2>10. Changes to This Policy</h2>
                 <p>
                   We may update this Privacy Policy from time to time. We will notify you of any changes
-                  by posting the new Privacy Policy on this page and updating the "Last Updated" date.
+                  by posting the new Privacy Policy on this page and updating the &quot;Last Updated&quot; date.
                 </p>
 
                 <h2>11. Contact Us</h2>
