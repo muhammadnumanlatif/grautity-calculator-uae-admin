@@ -24,7 +24,9 @@
     "react-hook-form": "^7.51.0",
     "@hookform/resolvers": "^3.3.4",
     "date-fns": "^3.3.1",
-    "aos": "^2.3.4"
+    "aos": "^2.3.4",
+    "react-markdown": "10.1.0",
+    "remark-gfm": "4.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
