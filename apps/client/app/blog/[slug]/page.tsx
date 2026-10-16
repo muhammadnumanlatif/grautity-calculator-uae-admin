@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import { SITE_CONFIG } from '@gratuity/shared';
 import { generateBreadcrumbSchema, combineSchemas } from '@gratuity/seo-utils';
 import NewsletterForm from '@/components/forms/NewsletterForm';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import styles from './page.module.css';
 
 // Revalidate every hour
@@ -138,10 +140,19 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="container">
             <div className="row">
               <div className="col-lg-8">
-                <div
-                  className={styles.postContent}
-                  dangerouslySetInnerHTML={{ __html: formatContent(post.content) }}
-                />
+                <div className={styles.postContent}>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      img: ({ node, ...props }) => (
+                        // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+                        <img loading="lazy" decoding="async" {...props} />
+                      ),
+                    }}
+                  >
+                    {post.content}
+                  </ReactMarkdown>
+                </div>
 
                 {/* Author Box */}
                 <div className={styles.authorBox}>
@@ -215,16 +226,3 @@ export default async function BlogPostPage({ params }: PageProps) {
   );
 }
 
-function formatContent(content: string): string {
-  // Simple markdown-like formatting
-  return content
-    .replace(/## (.*)/g, '<h2>$1</h2>')
-    .replace(/### (.*)/g, '<h3>$1</h3>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-    .replace(/- (.*)/g, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^/, '<p>')
-    .replace(/$/, '</p>');
-}
