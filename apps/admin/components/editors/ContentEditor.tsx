@@ -22,7 +22,7 @@ const contentSchema = z.object({
     title: z.string().min(5, 'Title must be at least 5 characters'),
     slug: z.string().min(2, 'Slug is required'),
     content: z.string().min(10, 'Content is too short'),
-    status: z.enum(['draft', 'published', 'scheduled', 'archived']),
+    status: z.enum(['draft', 'published', 'scheduled', 'archived']), publishedAt: z.string().optional(),
     metaTitle: z.string().max(70).optional(),
     metaDescription: z.string().max(160).optional(),
     focusKeyword: z.string().optional(),
@@ -32,6 +32,24 @@ const contentSchema = z.object({
 });
 
 type ContentFormData = z.infer<typeof contentSchema>;
+
+// Format a Firestore Timestamp, Date, ISO string or millis into 'YYYY-MM-DD'
+// for <input type="date">, using the local calendar date (no UTC shift).
+function toDateInputValue(value: any): string {
+    if (!value) return '';
+    try {
+        let d: Date | null = null;
+        if (value instanceof Date) d = value;
+        else if (typeof value?.toDate === 'function') d = value.toDate();
+        else if (typeof value === 'number') d = new Date(value);
+        else if (typeof value === 'string') d = new Date(value);
+        if (!d || isNaN(d.getTime())) return '';
+        const pad = (n: number) => String(n).padStart(2, '0');
+        return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+    } catch {         return '';     } }
+        return '';
+    }
+}
 
 interface ContentEditorProps {
     initialData?: any;
@@ -58,7 +76,7 @@ export default function ContentEditor({ initialData, type, onSave }: ContentEdit
             metaDescription: initialData?.seo?.metaDescription || '',
             focusKeyword: initialData?.seo?.focusKeyword || '',
             locationType: initialData?.type || 'emirate',
-            emirate: initialData?.emirate || 'dubai',
+            emirate: initialData?.emirate || 'dubai', publishedAt: toDateInputValue(initialData?.publishedAt),
         },
     });
 
@@ -377,7 +395,7 @@ export default function ContentEditor({ initialData, type, onSave }: ContentEdit
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label small fw-bold">Publish Date</label>
-                                    <input type="date" className="form-control bg-light border-0" />
+                                    <input type="date" className="form-control bg-light border-0" {...register('publishedAt')} />
                                 </div>
                             </div>
                         </div>
