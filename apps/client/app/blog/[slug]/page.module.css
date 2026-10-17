@@ -30,6 +30,23 @@
 .breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
 .breadcrumb a:hover { color: white; }
 
+/* Simple breadcrumb for clean article layout (no hero banner) */
+.breadcrumbSimple {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+.breadcrumbSimple li { display: flex; align-items: center; }
+.breadcrumbSimple li::after { content: '/'; margin: 0 0.5rem; opacity: 0.5; }
+.breadcrumbSimple li:last-child::after { display: none; }
+.breadcrumbSimple li:last-child { color: #999; max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.breadcrumbSimple a { color: #5e35b1; text-decoration: none; }
+.breadcrumbSimple a:hover { text-decoration: underline; }
+
 .category {
   display: inline-block;
   background: rgba(255, 255, 255, 0.2);

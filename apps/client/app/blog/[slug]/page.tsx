@@ -101,39 +101,16 @@ export default async function BlogPostPage({ params }: PageProps) {
       />
 
       <article>
-        {/* Hero Section */}
-        <header className={styles.postHero}>
-          <div className="container">
-            <nav aria-label="breadcrumb" className="mb-3">
-              <ol className={styles.breadcrumb}>
-                <li><Link href="/">Home</Link></li>
-                <li><Link href="/blog">Blog</Link></li>
-                <li>{post.category}</li>
-              </ol>
-            </nav>
-
-            <span className={styles.category}>{post.category}</span>
-            <h1>{post.title}</h1>
-
-            <div className={styles.postMeta}>
-              <span className={styles.author}>By Gratuity Team</span>
-              <span className={styles.separator}>•</span>
-              {publishDate && (
-                <>
-                  <time dateTime={publishDate.toISOString()}>
-                    {publishDate.toLocaleDateString('en-US', {
-                      month: 'long',
-                      day: 'numeric',
-                      year: 'numeric',
-                    })}
-                  </time>
-                  <span className={styles.separator}>•</span>
-                </>
-              )}
-              <span>{post.readingTime} min read</span>
-            </div>
-          </div>
-        </header>
+        {/* Simple breadcrumb - no hero banner */}
+        <div className="container pt-4">
+          <nav aria-label="breadcrumb" className="mb-2">
+            <ol className={styles.breadcrumbSimple}>
+              <li><Link href="/">Home</Link></li>
+              <li><Link href="/blog">Blog</Link></li>
+              <li>{post.title}</li>
+            </ol>
+          </nav>
+        </div>
 
         {/* Content Section */}
         <section className="section">
