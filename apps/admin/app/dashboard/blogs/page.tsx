@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getDocuments, COLLECTIONS } from '@gratuity/firebase-config/firestore';
 import { BlogPost } from '@gratuity/shared/types';
 
-export default function BlogsManager() {
+function formatPublishedAt(value){if(!value)return 'Draft';try{const d=value instanceof Date?value:typeof value?.toDate==='function'?value.toDate():new Date(value);return isNaN(d.getTime())?'Draft':d.toLocaleDateString();}catch{return 'Draft';}} export default function BlogsManager() {
     const [blogs, setBlogs] = useState<BlogPost[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -92,7 +92,7 @@ export default function BlogsManager() {
                                             </span>
                                         </td>
                                         <td>{blog.seo?.seoScore || 0}%</td>
-                                        <td className="small text-muted">{blog.publishedAt ? new Date(blog.publishedAt).toLocaleDateString() : 'Draft'}</td>
+                                        <td className="small text-muted">{formatPublishedAt(blog.publishedAt)}</td>
                                         <td className="px-4 text-end">
                                             <Link href={`/dashboard/blogs/edit/${blog.id}`} className="btn btn-sm btn-outline-primary shadow-sm">
                                                 Edit
