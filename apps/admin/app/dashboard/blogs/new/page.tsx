@@ -23,7 +23,7 @@ export default function NewBlog() {
                 },
                 authorId: user?.uid || 'admin',
                 readingTime: Math.ceil(data.content.split(' ').length / 200), // Basic reading time calc
-                publishedAt: data.status === 'published' ? new Date() : null,
+                publishedAt: data.publishedAt ? new Date(data.publishedAt + 'T00:00:00') : (data.status === 'published' ? new Date() : null),
             };
 
             // Clean up flat form data
